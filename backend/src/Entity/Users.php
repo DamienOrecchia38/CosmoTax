@@ -3,6 +3,8 @@
 namespace App\Entity;
 
 use App\Repository\UsersRepository;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface;
@@ -52,6 +54,17 @@ class Users implements UserInterface, PasswordAuthenticatedUserInterface
 
     #[ORM\Column(type: Types::DATE_MUTABLE)]
     private ?\DateTimeInterface $expiration_date = null;
+
+    /**
+     * @var Collection<int, Taxes>
+     */
+    #[ORM\OneToMany(targetEntity: Taxes::class, mappedBy: 'users')]
+    private Collection $relation_users_taxes;
+
+    public function __construct()
+    {
+        $this->relation_users_taxes = new ArrayCollection();
+    }
 
     public function getId(): ?int
     {
@@ -208,6 +221,36 @@ class Users implements UserInterface, PasswordAuthenticatedUserInterface
     public function setExpirationDate(\DateTimeInterface $expiration_date): static
     {
         $this->expiration_date = $expiration_date;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, Taxes>
+     */
+    public function getRelationUsersTaxes(): Collection
+    {
+        return $this->relation_users_taxes;
+    }
+
+    public function addRelationUsersTax(Taxes $relationUsersTax): static
+    {
+        if (!$this->relation_users_taxes->contains($relationUsersTax)) {
+            $this->relation_users_taxes->add($relationUsersTax);
+            $relationUsersTax->setUsers($this);
+        }
+
+        return $this;
+    }
+
+    public function removeRelationUsersTax(Taxes $relationUsersTax): static
+    {
+        if ($this->relation_users_taxes->removeElement($relationUsersTax)) {
+            // set the owning side to null (unless already changed)
+            if ($relationUsersTax->getUsers() === $this) {
+                $relationUsersTax->setUsers(null);
+            }
+        }
 
         return $this;
     }

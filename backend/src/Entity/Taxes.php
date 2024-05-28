@@ -24,6 +24,9 @@ class Taxes
     #[ORM\Column]
     private ?int $amount = null;
 
+    #[ORM\ManyToOne(inversedBy: 'relation_users_taxes')]
+    private ?Users $users = null;
+
     public function getId(): ?int
     {
         return $this->id;
@@ -61,6 +64,18 @@ class Taxes
     public function setAmount(int $amount): static
     {
         $this->amount = $amount;
+
+        return $this;
+    }
+
+    public function getUsers(): ?Users
+    {
+        return $this->users;
+    }
+
+    public function setUsers(?Users $users): static
+    {
+        $this->users = $users;
 
         return $this;
     }
