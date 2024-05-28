@@ -3,12 +3,12 @@
 namespace App\Entity;
 
 use ApiPlatform\Metadata\ApiResource;
-use App\Repository\TaxesRepository;
+use App\Repository\TaxRepository;
 use Doctrine\ORM\Mapping as ORM;
 
-#[ORM\Entity(repositoryClass: TaxesRepository::class)]
+#[ORM\Entity(repositoryClass: TaxRepository::class)]
 #[ApiResource]
-class Taxes
+class Tax
 {
     #[ORM\Id]
     #[ORM\GeneratedValue]
@@ -24,8 +24,8 @@ class Taxes
     #[ORM\Column]
     private ?int $amount = null;
 
-    #[ORM\ManyToOne(inversedBy: 'relation_users_taxes')]
-    private ?Users $users = null;
+    #[ORM\ManyToOne(inversedBy: 'relation_user_tax')]
+    private ?User $user = null;
 
     public function getId(): ?int
     {
@@ -68,14 +68,14 @@ class Taxes
         return $this;
     }
 
-    public function getUsers(): ?Users
+    public function getUser(): ?User
     {
-        return $this->users;
+        return $this->user;
     }
 
-    public function setUsers(?Users $users): static
+    public function setUser(?User $user): static
     {
-        $this->users = $users;
+        $this->user = $user;
 
         return $this;
     }

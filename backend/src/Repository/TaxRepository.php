@@ -2,22 +2,22 @@
 
 namespace App\Repository;
 
-use App\Entity\Taxes;
+use App\Entity\Tax;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
 
 /**
- * @extends ServiceEntityRepository<Taxes>
+ * @extends ServiceEntityRepository<Tax>
  */
-class TaxesRepository extends ServiceEntityRepository
+class TaxRepository extends ServiceEntityRepository
 {
     public function __construct(ManagerRegistry $registry)
     {
-        parent::__construct($registry, Taxes::class);
+        parent::__construct($registry, Tax::class);
     }
 
     //    /**
-    //     * @return Taxes[] Returns an array of Taxes objects
+    //     * @return Tax[] Returns an array of Tax objects
     //     */
     //    public function findByExampleField($value): array
     //    {
@@ -31,7 +31,7 @@ class TaxesRepository extends ServiceEntityRepository
     //        ;
     //    }
 
-    //    public function findOneBySomeField($value): ?Taxes
+    //    public function findOneBySomeField($value): ?Tax
     //    {
     //        return $this->createQueryBuilder('t')
     //            ->andWhere('t.exampleField = :val')

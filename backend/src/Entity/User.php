@@ -2,17 +2,19 @@
 
 namespace App\Entity;
 
-use App\Repository\UsersRepository;
+use App\Repository\UserRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface;
 use Symfony\Component\Security\Core\User\UserInterface;
+use ApiPlatform\Metadata\ApiResource;
 
-#[ORM\Entity(repositoryClass: UsersRepository::class)]
+#[ORM\Entity(repositoryClass: UserRepository::class)]
 #[ORM\UniqueConstraint(name: 'UNIQ_IDENTIFIER_EMAIL', fields: ['email'])]
-class Users implements UserInterface, PasswordAuthenticatedUserInterface
+#[ApiResource]
+class User implements UserInterface, PasswordAuthenticatedUserInterface
 {
     #[ORM\Id]
     #[ORM\GeneratedValue]
@@ -56,14 +58,14 @@ class Users implements UserInterface, PasswordAuthenticatedUserInterface
     private ?\DateTimeInterface $expiration_date = null;
 
     /**
-     * @var Collection<int, Taxes>
+     * @var Collection<int, Tax>
      */
-    #[ORM\OneToMany(targetEntity: Taxes::class, mappedBy: 'users')]
-    private Collection $relation_users_taxes;
+    #[ORM\OneToMany(targetEntity: Tax::class, mappedBy: 'user')]
+    private Collection $relation_user_tax;
 
     public function __construct()
     {
-        $this->relation_users_taxes = new ArrayCollection();
+        $this->relation_user_tax = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -226,29 +228,29 @@ class Users implements UserInterface, PasswordAuthenticatedUserInterface
     }
 
     /**
-     * @return Collection<int, Taxes>
+     * @return Collection<int, Tax>
      */
-    public function getRelationUsersTaxes(): Collection
+    public function getRelationUserTax(): Collection
     {
-        return $this->relation_users_taxes;
+        return $this->relation_user_tax;
     }
 
-    public function addRelationUsersTax(Taxes $relationUsersTax): static
+    public function addRelationUserTax(Tax $relationUserTax): static
     {
-        if (!$this->relation_users_taxes->contains($relationUsersTax)) {
-            $this->relation_users_taxes->add($relationUsersTax);
-            $relationUsersTax->setUsers($this);
+        if (!$this->relation_user_tax->contains($relationUserTax)) {
+            $this->relation_user_tax->add($relationUserTax);
+            $relationUserTax->setUser($this);
         }
 
         return $this;
     }
 
-    public function removeRelationUsersTax(Taxes $relationUsersTax): static
+    public function removeRelationUserTax(Tax $relationUserTax): static
     {
-        if ($this->relation_users_taxes->removeElement($relationUsersTax)) {
+        if ($this->relation_user_tax->removeElement($relationUserTax)) {
             // set the owning side to null (unless already changed)
-            if ($relationUsersTax->getUsers() === $this) {
-                $relationUsersTax->setUsers(null);
+            if ($relationUserTax->getUser() === $this) {
+                $relationUserTax->setUser(null);
             }
         }
 
