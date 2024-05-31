@@ -1,6 +1,9 @@
 import { useState } from 'react';
 
 export default function SignUpForm() {
+
+  const [errors, setErrors] = useState({});
+  const [successMessage, setSuccessMessage] = useState('');
   const [formData, setFormData] = useState({
     email: '',
     password: '',
@@ -19,12 +22,34 @@ export default function SignUpForm() {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    // envoyer données formulaire à API
+    setErrors({});
+    setSuccessMessage('');
+    try {
+      const response = await fetch('http://localhost:8000/signup', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(formData),
+      });
+      if (response.ok) {
+        setSuccessMessage('Inscription réussie!');
+      } else {
+        const errorData = await response.json();
+        setErrors(errorData);
+      }
+    } catch (error) {
+      console.error('Erreur:', error);
+    }
   };
 
   return (
     <form onSubmit={handleSubmit} className="bg-white shadow-md rounded px-8 pt-6 pb-8 mb-4">
-      <h2 className="text-2xl font-bold mb-6">Inscription</h2>
+      <h2 className="text-2xl font-bold mb-6 text-center">Inscription</h2>
+      {successMessage && <p className="text-green-500">{successMessage}</p>}
+      {Object.keys(errors).map((key) => (
+        <p key={key} className="text-red-500">{errors[key]}</p>
+      ))}
       <div className="mb-4">
         <label htmlFor="email" className="block text-gray-700 font-bold mb-2">
           Adresse mail
@@ -153,7 +178,7 @@ export default function SignUpForm() {
       </div>
       <button 
         type="submit"
-        className="bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline"
+        className="bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline text-center w-full"
       >
         S'inscrire
       </button>
