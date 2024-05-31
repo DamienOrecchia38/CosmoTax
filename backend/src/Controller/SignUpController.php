@@ -56,14 +56,12 @@ class SignUpController extends AbstractController
         }
         // Hash le mot de passe de l'utilisateur et l'enregistre.
         $newUser = new User();
-        if ($userExpirationDate) {
-            return new DateTime();
-        }
+        $userExpirationDate = new DateTime($userExpirationDate);
         $newUser->setEmail($userEmail);
         $newUser->setPassword(
             $this->passwordHasher->hashPassword($newUser, $userPassword)
         );
-        $newUser->setRoles([$userRoles]);
+        $newUser->setRoles($userRoles);
         $newUser->setFirstName($userFirstName);
         $newUser->setLastName($userLastName);
         $newUser->setAdress($userAdress);
