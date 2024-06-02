@@ -15,6 +15,7 @@ export default function RootLayout({ children }) {
         <title>{metadata.title}</title>
         <meta name="description" content={metadata.description} />
         <link rel="icon" href="/alien.png" />
+        <link href="https://fonts.googleapis.com/css2?family=Bangers&display=swap" rel="stylesheet" />
       </head>
       <body className={inter.className}>{children}</body>
     </html>
