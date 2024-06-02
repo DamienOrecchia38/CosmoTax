@@ -18,7 +18,6 @@ use Symfony\Component\Validator\Constraints\Collection;
 use Symfony\Component\Validator\Constraints\CardScheme;
 use Symfony\Component\Validator\Constraints\Date;
 use Symfony\Component\Validator\Constraints\GreaterThan;
-use Symfony\Component\HttpFoundation\JsonResponse;
 
 class SignUpController extends AbstractController
 {
@@ -30,30 +29,24 @@ class SignUpController extends AbstractController
         $this->passwordHasher = $passwordHasher;
     }
 
-    #[Route('/signup', name: 'app_signup', methods: ['POST'])]
-    public function signup(Request $request): Response
+    #[Route('/api/users', name: 'api_users_post', methods: ['POST'])]
+    public function __invoke(Request $request): Response
     {
         $requestContent = json_decode($request->getContent(), true);
+
+        // Log des données reçues
+        // error_log('Received data: ' . print_r($requestContent, true));
 
         $validator = Validation::createValidator();
         
         $constraints = [
             'email' => [
-                new NotBlank([
-                    'message' => 'Veuillez entrer une adresse email',
-                ]),
-                new Email([
-                    'message' => 'Veuillez entrer une adresse email valide',
-                ]),
+                new NotBlank(['message' => 'Veuillez entrer une adresse email']),
+                new Email(['message' => 'Veuillez entrer une adresse email valide']),
             ],
             'password' => [
-                new NotBlank([
-                    'message' => 'Veuillez entrer un mot de passe',
-                ]),
-                new Length([
-                    'min' => 6,
-                    'minMessage' => 'Votre mot de passe doit contenir au moins {{ limit }} caractères',
-                ]),
+                new NotBlank(['message' => 'Veuillez entrer un mot de passe']),
+                new Length(['min' => 6, 'minMessage' => 'Votre mot de passe doit contenir au moins {{ limit }} caractères']),
             ],
             'firstname' => new NotBlank(['message' => 'Veuillez entrer votre prénom']),
             'lastname' => new NotBlank(['message' => 'Veuillez entrer votre nom']),
@@ -65,16 +58,12 @@ class SignUpController extends AbstractController
             ],
             'cryptogram' => [
                 new NotBlank(['message' => 'Veuillez entrer votre cryptogramme']),
-                new Length([
-                    'min' => 3,
-                    'max' => 3,
-                    'exactMessage' => 'Votre cryptogramme doit contenir {{ limit }} chiffres',
-                ]),
+                new Length(['min' => 3, 'max' => 3, 'exactMessage' => 'Votre cryptogramme doit contenir {{ limit }} chiffres']),
             ],
             'expirationDate' => [
                 new NotBlank(['message' => 'Veuillez entrer la date d\'expiration']),
                 new Date(['message' => 'Veuillez entrer une date valide']),
-                new GreaterThan(['value' => 'today', 'message' => 'La date d\'expiration doit être dans le futur']),
+                // new GreaterThan(['value' => 'today', 'message' => 'La date d\'expiration doit être dans le futur']),
             ],
         ];
 
@@ -85,23 +74,25 @@ class SignUpController extends AbstractController
             foreach ($violations as $violation) {
                 $errors[$violation->getPropertyPath()][] = $violation->getMessage();
             }
-            return new JsonResponse($errors, Response::HTTP_BAD_REQUEST);
+            // error_log('Validation errors: ' . print_r($errors, true));
+            return new Response(json_encode($errors), Response::HTTP_BAD_REQUEST);
         }
 
         $userRepository = $this->entityManager->getRepository(User::class);
         $existingUser = $userRepository->findOneBy(['email' => $requestContent['email']]);
 
         if ($existingUser) {
-            return new JsonResponse(['error' => 'Cette adresse email est déjà utilisée'], Response::HTTP_CONFLICT);
+            return new Response('Cette adresse email est déjà utilisée', Response::HTTP_CONFLICT);
         }
 
         $user = new User();
         $user->setEmail($requestContent['email']);
+        $user->setRoles(['ROLE_USER']);
         $user->setPassword($this->passwordHasher->hashPassword($user, $requestContent['password']));
         $user->setFirstName($requestContent['firstname']);
         $user->setLastName($requestContent['lastname']);
         $user->setAdress($requestContent['address']);
-        $user->setPhone($requestContent['phone']);
+        $user->setPhone((int)$requestContent['phone']);
         $user->setCardNumber($requestContent['cardNumber']);
         $user->setCryptogram($requestContent['cryptogram']);
         $user->setExpirationDate(new DateTime($requestContent['expirationDate']));
@@ -109,6 +100,6 @@ class SignUpController extends AbstractController
         $this->entityManager->persist($user);
         $this->entityManager->flush();
 
-        return new JsonResponse(['message' => 'Utilisateur créé avec succès'], Response::HTTP_CREATED);
+        return new Response('Utilisateur créé avec succès', Response::HTTP_CREATED);
     }
 }
