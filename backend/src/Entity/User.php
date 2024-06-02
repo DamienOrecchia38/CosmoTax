@@ -17,9 +17,9 @@ use App\Controller\SignUpController;
 #[ORM\UniqueConstraint(name: 'UNIQ_IDENTIFIER_EMAIL', fields: ['email'])]
 #[ApiResource(
     operations: [
-    new Post(
-    controller: SignUpController::class
-    )
+        new Post(
+            controller: SignUpController::class
+        )
     ]
    )]
 class User implements UserInterface, PasswordAuthenticatedUserInterface
@@ -53,7 +53,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     #[ORM\Column(length: 255)]
     private ?string $adress = null;
 
-    #[ORM\Column]
+    #[ORM\Column(type: 'integer')]
     private ?int $phone = null;
 
     #[ORM\Column]
