@@ -6,7 +6,7 @@ import LoginForm from './components/LoginForm';
 import SignUpForm from './components/SignUpForm';
 
 export default function Home() {
-  
+
   const [showLoginForm, setShowLoginForm] = useState(false);
   const [showSignUpForm, setShowSignUpForm] = useState(false);
 
@@ -23,12 +23,12 @@ export default function Home() {
         }} 
       />
       {showLoginForm && (
-        <div className="flex justify-center items-center mt-12">
+        <div className="min-h-screen flex items-center justify-center">
           <LoginForm />
         </div>
       )}
       {showSignUpForm && (
-        <div className="flex justify-center items-center mt-8">
+        <div className="min-h-screen flex items-center justify-center">
           <SignUpForm />
         </div>
       )}
