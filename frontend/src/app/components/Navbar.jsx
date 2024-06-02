@@ -1,4 +1,5 @@
-/* Start of Selection */
+import Link from 'next/link';
+
 export default function Navbar({ onLoginClick, onSignUpClick }) {
   return (
     <nav className="flex justify-between items-center p-4 bg-white bg-opacity-40">
@@ -23,12 +24,16 @@ export default function Navbar({ onLoginClick, onSignUpClick }) {
 
         <div className="flex items-center space-x-2">
           <lord-icon src="https://cdn.lordicon.com/xfzuyvam.json" trigger="loop" stroke="bold" colors="primary:#e83a30,secondary:#ffd700" style={{ width: '40px', height: '40px' }}></lord-icon>
-          <button className="px-6 py-3 bg-gradient-to-r from-yellow-300 to-yellow-500 text-gray-100 text-xl font-bold rounded-3xl hover:bg-yellow-500" onClick={onSignUpClick}>Profil</button>
+          <Link href="/profile/profile">
+            <button className="px-6 py-3 bg-gradient-to-r from-yellow-300 to-yellow-500 text-gray-100 text-xl font-bold rounded-3xl hover:bg-yellow-500">Profil</button>
+          </Link>        
         </div>
 
         <div className="flex items-center space-x-2">
           <lord-icon src="https://cdn.lordicon.com/fhszghjk.json" trigger="loop" stroke="bold" colors="primary:#e83a30,secondary:#ffd700" style={{ width: '40px', height: '40px' }}></lord-icon>
-          <button className="px-6 py-3 bg-gradient-to-r from-yellow-300 to-yellow-500 text-gray-100 text-xl font-bold rounded-3xl hover:bg-yellow-500" onClick={onSignUpClick}>Paiement</button>
+          <Link href="payment/payment">
+            <button className="px-6 py-3 bg-gradient-to-r from-yellow-300 to-yellow-500 text-gray-100 text-xl font-bold rounded-3xl hover:bg-yellow-500">Paiement</button>
+          </Link>
         </div>
 
       </div>
