@@ -1,55 +1,68 @@
-import { useState } from 'react';
+import { useFormik } from 'formik';
+import * as Yup from 'yup';
 
 export default function SignUpForm() {
+  const formik = useFormik({
+    initialValues: {
+      email: '',
+      password: '',
+      firstname: '',
+      lastname: '',
+      address: '',
+      phone: '',
+      cardNumber: '',
+      cryptogram: '',
+      expirationDate: '',
+    },
+    validationSchema: Yup.object({
+      email: Yup.string().email('Adresse mail invalide').required('L\'adresse mail est requise'),
+      password: Yup.string().min(6, 'Le mot de passe doit contenir au moins 6 caractères').required('Le mot de passe est requis'),
+      firstname: Yup.string().required('Le prénom est requis'),
+      lastname: Yup.string().required('Le nom est requis'),
+      address: Yup.string().required('L\'adresse est requise'),
+      phone: Yup.string().required('Le téléphone est requis'),
+      cardNumber: Yup.string().required('Le numéro de carte bancaire est requis'),
+      cryptogram: Yup.string().required('Le cryptogramme est requis'),
+      expirationDate: Yup.date().required('La date d\'expiration est requise'),
+    }),
+    onSubmit: async (values, { setErrors, setSubmitting }) => {
+    console.log('Form values:', values); // Log des valeurs du formulaire
+      try {
+        const response = await fetch('http://localhost:8000/api/users', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify(values),
+        });
+        console.log('API response:', response); // Log de la réponse de l'API
 
-  const [errors, setErrors] = useState({});
-  const [successMessage, setSuccessMessage] = useState('');
-  const [formData, setFormData] = useState({
-    email: '',
-    password: '',
-    firstname: '',
-    lastname: '',
-    address: '',
-    phone: '',
-    cardNumber: '',
-    cryptogram: '',
-    expirationDate: '',
+        if (response.ok) {
+          const data = await response.json();
+          console.log('Success data:', data); // Log des données de succès
+          formik.resetForm();
+          alert(data.message);
+
+        } else {
+          const errorData = await response.json();
+          console.log('Error data:', errorData); // Log des données d'erreur
+          setErrors({ _error: errorData['hydra:description'] });
+        }
+
+      } catch (error) {
+        console.error('Erreur:', error);
+      }
+
+      setSubmitting(false);
+    },
   });
 
-  const handleChange = (e) => {
-    setFormData({ ...formData, [e.target.name]: e.target.value });
-  };
-
-  const handleSubmit = async (e) => {
-    e.preventDefault();
-    setErrors({});
-    setSuccessMessage('');
-    try {
-      const response = await fetch('http://localhost:8000/signup', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify(formData),
-      });
-      if (response.ok) {
-        setSuccessMessage('Inscription réussie!');
-      } else {
-        const errorData = await response.json();
-        setErrors(errorData);
-      }
-    } catch (error) {
-      console.error('Erreur:', error);
-    }
-  };
-
   return (
-    <form onSubmit={handleSubmit} className="bg-white shadow-md rounded px-8 pt-6 pb-8 mb-4">
-      <h2 className="text-2xl font-bold mb-6 text-center">Inscription</h2>
-      {successMessage && <p className="text-green-500">{successMessage}</p>}
-      {Object.keys(errors).map((key) => (
-        <p key={key} className="text-red-500">{errors[key]}</p>
-      ))}
+    
+    <form onSubmit={formik.handleSubmit} className="bg-white shadow-md rounded px-8 pt-6 pb-8 mb-4">
+
+      <h2 className="text-3xl font-bold mb-6 text-center">Inscription</h2>
+
       <div className="mb-4">
         <label htmlFor="email" className="block text-gray-700 font-bold mb-2">
           Adresse mail
@@ -57,13 +70,16 @@ export default function SignUpForm() {
         <input
           type="email"
           id="email"
-          name="email"
-          value={formData.email}
-          onChange={handleChange}
-          required
-          className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+          {...formik.getFieldProps('email')}
+          className={`shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline ${
+            formik.touched.email && formik.errors.email ? 'border-red-500' : ''
+          }`}
         />
+        {formik.touched.email && formik.errors.email && (
+          <p className="text-red-500 text-xs italic">{formik.errors.email}</p>
+        )}
       </div>
+
       <div className="mb-4">
         <label htmlFor="password" className="block text-gray-700 font-bold mb-2">
           Mot de passe
@@ -71,13 +87,16 @@ export default function SignUpForm() {
         <input
           type="password"
           id="password"
-          name="password"
-          value={formData.password}
-          onChange={handleChange}
-          required
-          className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+          {...formik.getFieldProps('password')}
+          className={`shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline ${
+            formik.touched.password && formik.errors.password ? 'border-red-500' : ''
+          }`}
         />
+        {formik.touched.password && formik.errors.password && (
+          <p className="text-red-500 text-xs italic">{formik.errors.password}</p>
+        )}
       </div>
+
       <div className="mb-4">
         <label htmlFor="firstname" className="block text-gray-700 font-bold mb-2">
           Prénom
@@ -85,69 +104,84 @@ export default function SignUpForm() {
         <input
           type="text"
           id="firstname"
-          name="firstname"
-          value={formData.firstname}
-          onChange={handleChange}
-          required
-          className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+          {...formik.getFieldProps('firstname')}
+          className={`shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline ${
+            formik.touched.firstname && formik.errors.firstname ? 'border-red-500' : ''
+          }`}
         />
+        {formik.touched.firstname && formik.errors.firstname && (
+          <p className="text-red-500 text-xs italic">{formik.errors.firstname}</p>
+        )}
       </div>
+
       <div className="mb-4">
         <label htmlFor="lastname" className="block text-gray-700 font-bold mb-2">
-        Nom
+          Nom
         </label>
         <input
           type="text"
           id="lastname"
-          name="lastname"
-          value={formData.lastname}
-          onChange={handleChange}
-          required
-          className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+          {...formik.getFieldProps('lastname')}
+          className={`shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline ${
+            formik.touched.lastname && formik.errors.lastname ? 'border-red-500' : ''
+          }`}
         />
+        {formik.touched.lastname && formik.errors.lastname && (
+          <p className="text-red-500 text-xs italic">{formik.errors.lastname}</p>
+        )}
       </div>
+
       <div className="mb-4">
         <label htmlFor="address" className="block text-gray-700 font-bold mb-2">
-          Adresse
+        Adresse
         </label>
         <input
           type="text"
           id="address"
-          name="address"
-          value={formData.address}
-          onChange={handleChange}
-          required
-          className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+          {...formik.getFieldProps('address')}
+          className={`shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline ${
+            formik.touched.address && formik.errors.address ? 'border-red-500' : ''
+          }`}
         />
+        {formik.touched.address && formik.errors.address && (
+          <p className="text-red-500 text-xs italic">{formik.errors.address}</p>
+        )}
       </div>
+
       <div className="mb-4">
         <label htmlFor="phone" className="block text-gray-700 font-bold mb-2">
           Téléphone
         </label>
         <input
-          type="tel"
+          type="number"
           id="phone"
-          name="phone"
-          value={formData.phone}
-          onChange={handleChange}
-          required
-          className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+          {...formik.getFieldProps('phone')}
+          className={`shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline ${
+            formik.touched.phone && formik.errors.phone ? 'border-red-500' : ''
+          }`}
         />
+        {formik.touched.phone && formik.errors.phone && (
+          <p className="text-red-500 text-xs italic">{formik.errors.phone}</p>
+        )}
       </div>
+
       <div className="mb-4">
         <label htmlFor="cardNumber" className="block text-gray-700 font-bold mb-2">
-          N° de carte bancaire
+          Numéro de carte bancaire
         </label>
         <input
           type="text"
           id="cardNumber"
-          name="cardNumber"
-          value={formData.cardNumber}
-          onChange={handleChange}
-          required
-          className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+          {...formik.getFieldProps('cardNumber')}
+          className={`shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline ${
+            formik.touched.cardNumber && formik.errors.cardNumber ? 'border-red-500' : ''
+          }`}
         />
+        {formik.touched.cardNumber && formik.errors.cardNumber && (
+          <p className="text-red-500 text-xs italic">{formik.errors.cardNumber}</p>
+        )}
       </div>
+
       <div className="mb-4">
         <label htmlFor="cryptogram" className="block text-gray-700 font-bold mb-2">
           Cryptogramme
@@ -155,13 +189,16 @@ export default function SignUpForm() {
         <input
           type="text"
           id="cryptogram"
-          name="cryptogram"
-          value={formData.cryptogram}
-          onChange={handleChange}
-          required
-          className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+          {...formik.getFieldProps('cryptogram')}
+          className={`shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline ${
+            formik.touched.cryptogram && formik.errors.cryptogram ? 'border-red-500' : ''
+          }`}
         />
+        {formik.touched.cryptogram && formik.errors.cryptogram && (
+          <p className="text-red-500 text-xs italic">{formik.errors.cryptogram}</p>
+        )}
       </div>
+
       <div className="mb-4">
         <label htmlFor="expirationDate" className="block text-gray-700 font-bold mb-2">
           Date d'expiration
@@ -169,19 +206,25 @@ export default function SignUpForm() {
         <input
           type="date"
           id="expirationDate"
-          name="expirationDate"
-          value={formData.expirationDate}
-          onChange={handleChange}
-          required
-          className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+          {...formik.getFieldProps('expirationDate')}
+          className={`shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline ${
+            formik.touched.expirationDate && formik.errors.expirationDate ? 'border-red-500' : ''
+          }`}
         />
+        {formik.touched.expirationDate && formik.errors.expirationDate && (
+          <p className="text-red-500 text-xs italic">{formik.errors.expirationDate}</p>
+        )}
       </div>
-      <button 
+
+      <button
         type="submit"
-        className="bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline text-center w-full"
+        disabled={formik.isSubmitting}
+        className="bg-green-500 hover:bg-green-700 text-white text-lg font-bold py-3 px-6 rounded focus:outline-none focus:shadow-outline text-center w-full"
       >
         S'inscrire
       </button>
+
+      {formik.errors._error && <div>{formik.errors._error}</div>}
     </form>
   );
 }
