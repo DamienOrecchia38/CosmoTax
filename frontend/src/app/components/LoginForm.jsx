@@ -1,5 +1,6 @@
 import { useFormik } from 'formik';
 import * as Yup from 'yup';
+import { FaUser, FaLock, FaStar } from 'react-icons/fa';
 
 export default function LoginForm() {
   const formik = useFormik({
@@ -24,7 +25,7 @@ export default function LoginForm() {
         if (response.ok) {
           const data = await response.json();
           alert('Connexion réussie');
-          // Redirection vers page profil
+          // Redirection vers page profil ?!
         } else {
           const errorData = await response.json();
           setErrors({ email: 'Email ou mot de passe incorrect' });
@@ -38,41 +39,40 @@ export default function LoginForm() {
   });
 
   return (
-    <form onSubmit={formik.handleSubmit} className="bg-white shadow-md rounded px-8 pt-6 pb-8 mb-4 mx-auto max-w-sm text-center">
-      <h2 className="text-3xl font-bold mb-6">Connexion</h2>
+    <form onSubmit={formik.handleSubmit} className="bg-white bg-opacity-20 shadow-lg backdrop-blur-sm rounded-3xl px-16 pt-12 pb-14 mb-6 mx-auto max-w-4xl text-center">
+      
+      <h2 className="text-5xl font-bold mb-10 bg-gradient-to-r from-yellow-400 to-green-600 text-transparent bg-clip-text flex items-center justify-center">Connexion</h2>
+      
       {formik.errors.email && <p className="text-red-500">{formik.errors.email}</p>}
-      <div className="mb-4 text-left">
-        <label htmlFor="email" className="block text-gray-700 text-lg font-bold mb-2">Adresse mail</label>
+
+      <div className="mb-8 text-left relative">
+        <FaUser className="absolute left-4 top-1/2 transform -translate-y-1/2 text-black" />
         <input 
           type="email"
           id="email"
+          placeholder="Adresse mail intergalactique"
           {...formik.getFieldProps('email')}
-          className={`shadow appearance-none border rounded w-full py-3 px-4 text-gray-700 leading-tight focus:outline-none focus:shadow-outline ${
-            formik.touched.email && formik.errors.email ? 'border-red-500' : ''
-          }`}
+          className={`pl-12 shadow-inner appearance-none border rounded-2xl w-full py-5 px-5 text-gray-700 leading-tight focus:outline-none focus:shadow-outline hover:shadow-lg ${formik.touched.email && formik.errors.email ? 'border-red-500' : ''}`}
         />
-        {formik.touched.email && formik.errors.email && (
-          <p className="text-red-500 text-xs italic">{formik.errors.email}</p>
-        )}
+        {formik.touched.email && formik.errors.email && (<p className="text-red-500 text-sm italic">{formik.errors.email}</p>)}
       </div>
-      <div className="mb-6 text-left">
-        <label htmlFor="password" className="block text-gray-700 text-lg font-bold mb-2">Mot de passe</label>
+
+      <div className="mb-10 text-left relative">
+        <FaLock className="absolute left-4 top-1/2 transform -translate-y-1/2 text-black" />
         <input
           type="password"
           id="password"
+          placeholder="Mot de passe cosmic"
           {...formik.getFieldProps('password')}
-          className={`shadow appearance-none border rounded w-full py-3 px-4 text-gray-700 leading-tight focus:outline-none focus:shadow-outline ${
-            formik.touched.password && formik.errors.password ? 'border-red-500' : ''
-          }`}
+          className={`pl-12 shadow-inner appearance-none border rounded-2xl w-full py-5 px-5 text-gray-700 leading-tight focus:outline-none focus:shadow-outline hover:shadow-lg ${formik.touched.password && formik.errors.password ? 'border-red-500' : ''}`}
         />
-        {formik.touched.password && formik.errors.password && (
-          <p className="text-red-500 text-xs italic">{formik.errors.password}</p>
-        )}
+        {formik.touched.password && formik.errors.password && (<p className="text-red-500 text-sm italic">{formik.errors.password}</p>)}
       </div>
+
       <button 
         type="submit"
         disabled={formik.isSubmitting}
-        className="bg-blue-500 hover:bg-blue-700 text-white text-lg font-bold py-3 px-6 rounded focus:outline-none focus:shadow-outline"
+        className="bg-gradient-to-r from-yellow-300 to-yellow-500 hover:from-yellow-500 hover:to-yellow-700 text-white text-xl font-bold py-5 px-10 rounded-3xl focus:outline-none focus:shadow-outline"
       >
         Se connecter
       </button>
