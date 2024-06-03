@@ -53,14 +53,14 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     #[ORM\Column(length: 255)]
     private ?string $adress = null;
 
-    #[ORM\Column(type: 'integer')]
-    private ?int $phone = null;
+    #[ORM\Column(length: 255)]
+    private ?string $phone = null;
 
-    #[ORM\Column]
-    private ?int $card_number = null;
+    #[ORM\Column(length: 255)]
+    private ?string $card_number = null;
 
-    #[ORM\Column]
-    private ?int $cryptogram = null;
+    #[ORM\Column(length: 255)]
+    private ?string $cryptogram = null;
 
     #[ORM\Column(type: Types::DATE_MUTABLE)]
     private ?\DateTimeInterface $expiration_date = null;
@@ -187,36 +187,36 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
         return $this;
     }
 
-    public function getPhone(): ?int
+    public function getPhone(): ?string
     {
         return $this->phone;
     }
 
-    public function setPhone(int $phone): static
+    public function setPhone(string $phone): static
     {
         $this->phone = $phone;
 
         return $this;
     }
 
-    public function getCardNumber(): ?int
+    public function getCardNumber(): ?string
     {
         return $this->card_number;
     }
 
-    public function setCardNumber(int $card_number): static
+    public function setCardNumber(string $card_number): static
     {
         $this->card_number = $card_number;
 
         return $this;
     }
 
-    public function getCryptogram(): ?int
+    public function getCryptogram(): ?string
     {
         return $this->cryptogram;
     }
 
-    public function setCryptogram(int $cryptogram): static
+    public function setCryptogram(string $cryptogram): static
     {
         $this->cryptogram = $cryptogram;
 

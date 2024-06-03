@@ -15,9 +15,7 @@ use Symfony\Component\Validator\Constraints\NotBlank;
 use Symfony\Component\Validator\Constraints\Email;
 use Symfony\Component\Validator\Constraints\Length;
 use Symfony\Component\Validator\Constraints\Collection;
-use Symfony\Component\Validator\Constraints\CardScheme;
 use Symfony\Component\Validator\Constraints\Date;
-use Symfony\Component\Validator\Constraints\GreaterThan;
 
 class SignUpController extends AbstractController
 {
@@ -34,9 +32,6 @@ class SignUpController extends AbstractController
     {
         $requestContent = json_decode($request->getContent(), true);
 
-        // Log des données reçues
-        // error_log('Received data: ' . print_r($requestContent, true));
-
         $validator = Validation::createValidator();
         
         $constraints = [
@@ -52,18 +47,16 @@ class SignUpController extends AbstractController
             'lastname' => new NotBlank(['message' => 'Veuillez entrer votre nom']),
             'address' => new NotBlank(['message' => 'Veuillez entrer votre adresse']),
             'phone' => new NotBlank(['message' => 'Veuillez entrer votre numéro de téléphone']),
-            'cardNumber' => [
+            'card_number' => [
                 new NotBlank(['message' => 'Veuillez entrer votre numéro de carte']),
-                new CardScheme(['schemes' => ['VISA', 'MASTERCARD']]),
             ],
             'cryptogram' => [
                 new NotBlank(['message' => 'Veuillez entrer votre cryptogramme']),
                 new Length(['min' => 3, 'max' => 3, 'exactMessage' => 'Votre cryptogramme doit contenir {{ limit }} chiffres']),
             ],
-            'expirationDate' => [
+            'expiration_date' => [
                 new NotBlank(['message' => 'Veuillez entrer la date d\'expiration']),
                 new Date(['message' => 'Veuillez entrer une date valide']),
-                // new GreaterThan(['value' => 'today', 'message' => 'La date d\'expiration doit être dans le futur']),
             ],
         ];
 
@@ -74,7 +67,6 @@ class SignUpController extends AbstractController
             foreach ($violations as $violation) {
                 $errors[$violation->getPropertyPath()][] = $violation->getMessage();
             }
-            // error_log('Validation errors: ' . print_r($errors, true));
             return new Response(json_encode($errors), Response::HTTP_BAD_REQUEST);
         }
 
@@ -93,9 +85,9 @@ class SignUpController extends AbstractController
         $user->setLastName($requestContent['lastname']);
         $user->setAdress($requestContent['address']);
         $user->setPhone((int)$requestContent['phone']);
-        $user->setCardNumber($requestContent['cardNumber']);
+        $user->setCardNumber($requestContent['card_number']);
         $user->setCryptogram($requestContent['cryptogram']);
-        $user->setExpirationDate(new DateTime($requestContent['expirationDate']));
+        $user->setExpirationDate(new DateTime($requestContent['expiration_date']));
 
         $this->entityManager->persist($user);
         $this->entityManager->flush();

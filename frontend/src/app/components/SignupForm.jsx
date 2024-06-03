@@ -3,6 +3,7 @@ import * as Yup from 'yup';
 import { FaEnvelope, FaLock, FaUser, FaHome, FaPhone, FaCreditCard, FaKey, FaCalendarAlt } from 'react-icons/fa';
 
 export default function SignUpForm() {
+  
   const formik = useFormik({
     initialValues: {
       email: '',
@@ -11,9 +12,9 @@ export default function SignUpForm() {
       lastname: '',
       address: '',
       phone: '',
-      cardNumber: '',
+      card_number: '',
       cryptogram: '',
-      expirationDate: '',
+      expiration_date: '',
     },
     validationSchema: Yup.object({
       email: Yup.string().email('Adresse mail invalide').required('L\'adresse mail est requise'),
@@ -22,9 +23,9 @@ export default function SignUpForm() {
       lastname: Yup.string().required('Le nom est requis'),
       address: Yup.string().required('L\'adresse est requise'),
       phone: Yup.string().required('Le téléphone est requis'),
-      cardNumber: Yup.string().required('Le numéro de carte bancaire est requis'),
+      card_number: Yup.string().required('Le numéro de carte bancaire est requis'),
       cryptogram: Yup.string().required('Le cryptogramme est requis'),
-      expirationDate: Yup.date().required('La date d\'expiration est requise'),
+      expiration_date: Yup.date().required('La date d\'expiration est requise'),
     }),
     onSubmit: async (values, { setErrors, setSubmitting }) => {
       try {
@@ -56,7 +57,7 @@ export default function SignUpForm() {
 
   return (
 
-    <form onSubmit={formik.handleSubmit} className="bg-white bg-opacity-20 shadow-lg backdrop-blur-sm rounded-2xl px-16 pt-8 pb-10 mb-6 mx-auto max-w-4xl text-center">
+    <form onSubmit={formik.handleSubmit} className="bg-white bg-opacity-20 shadow-lg backdrop-blur-sm rounded-2xl px-16 pt-8 pb-10 mb-6 mx-auto max-w-4xl text-center" cz-shortcut-listen="true">
 
 
 
@@ -192,7 +193,7 @@ export default function SignUpForm() {
 
           <input
 
-            type="number"
+            type="tel"
 
             id="phone"
 
@@ -215,19 +216,19 @@ export default function SignUpForm() {
 
           <input
 
-            type="text"
+            type="tel"
 
-            id="cardNumber"
+            id="card_number"
 
             placeholder="Numéro de carte bancaire"
 
-            {...formik.getFieldProps('cardNumber')}
+            {...formik.getFieldProps('card_number')}
 
-            className={`pl-10 shadow-inner appearance-none border rounded-2xl w-full py-4 px-8 text-gray-700 leading-tight focus:outline-none focus:shadow-outline hover:shadow-lg ${formik.touched.cardNumber && formik.errors.cardNumber ? 'border-red-500' : ''}`}
+            className={`pl-10 shadow-inner appearance-none border rounded-2xl w-full py-4 px-8 text-gray-700 leading-tight focus:outline-none focus:shadow-outline hover:shadow-lg ${formik.touched.card_number && formik.errors.card_number ? 'border-red-500' : ''}`}
 
           />
 
-          {formik.touched.cardNumber && formik.errors.cardNumber && (<p className="text-red-500 text-xs italic">{formik.errors.cardNumber}</p>)}
+          {formik.touched.card_number && formik.errors.card_number && (<p className="text-red-500 text-xs italic">{formik.errors.card_number}</p>)}
 
         </div>
 
@@ -265,17 +266,17 @@ export default function SignUpForm() {
 
             type="date"
 
-            id="expirationDate"
+            id="expiration_date"
 
             placeholder="Date d'expiration"
 
-            {...formik.getFieldProps('expirationDate')}
+            {...formik.getFieldProps('expiration_date')}
 
-            className={`pl-10 shadow-inner appearance-none border rounded-2xl w-full py-4 px-8 text-gray-700 leading-tight focus:outline-none focus:shadow-outline hover:shadow-lg ${formik.touched.expirationDate && formik.errors.expirationDate ? 'border-red-500' : ''}`}
+            className={`pl-10 shadow-inner appearance-none border rounded-2xl w-full py-4 px-8 text-gray-700 leading-tight focus:outline-none focus:shadow-outline hover:shadow-lg ${formik.touched.expiration_date && formik.errors.expiration_date ? 'border-red-500' : ''}`}
 
           />
 
-          {formik.touched.expirationDate && formik.errors.expirationDate && (<p className="text-red-500 text-xs italic">{formik.errors.expirationDate}</p>)}
+          {formik.touched.expiration_date && formik.errors.expiration_date && (<p className="text-red-500 text-xs italic">{formik.errors.expiration_date}</p>)}
 
         </div>
 
