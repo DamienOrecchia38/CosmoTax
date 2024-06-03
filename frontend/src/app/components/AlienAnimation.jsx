@@ -7,17 +7,17 @@ export default function AlienAnimation() {
 
   useEffect(() => {
     const alien = alienRef.current;
-    const animationDuration = 5000; // Durée de l'animation en millisecondes
+    const animationDuration = 7000;
     
     const startAnimation = () => {
-      const alienBottom = Math.random() * window.innerWidth;
-      alien.style.left = `${alienBottom}px`;
-      alien.style.bottom = '-100px';
+      alien.style.left = '50%';
+      alien.style.top = '50%';
+      alien.style.transform = 'translate(-50%, -50%) scale(0.5)';
       
       alien.animate([
-        { bottom: '-100px' },
-        { bottom: `${window.innerHeight / 2}px` },
-        { bottom: '-100px' }
+        { transform: 'translate(-50%, -50%) scale(0.5)' },
+        { transform: 'translate(-50%, -50%) scale(1)' },
+        { transform: 'translate(-50%, -50%) scale(0.5)' }
       ], {
         duration: animationDuration,
       });
@@ -35,7 +35,7 @@ export default function AlienAnimation() {
       ref={alienRef}
       src="/alien_navbar.png"
       alt="Alien"
-      className="fixed w-50 h-50"
+      className="fixed"
     />
   );
 }

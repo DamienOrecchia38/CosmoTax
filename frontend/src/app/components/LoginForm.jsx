@@ -1,12 +1,13 @@
 import { useFormik } from 'formik';
 import * as Yup from 'yup';
-import { FaUser, FaLock, FaStar } from 'react-icons/fa';
+import { FaUser, FaLock} from 'react-icons/fa';
 
 export default function LoginForm() {
+  
   const formik = useFormik({
     initialValues: {
       email: '',
-      password: '',
+      password: ''
     },
     validationSchema: Yup.object({
       email: Yup.string().email('Adresse mail invalide').required('L\'adresse mail est requise'),
@@ -19,16 +20,21 @@ export default function LoginForm() {
           headers: {
             'Content-Type': 'application/json',
           },
-          body: JSON.stringify(values),
+          body: JSON.stringify({
+            username: values.email,
+            password: values.password
+          }),
         });
 
         if (response.ok) {
           const data = await response.json();
+          localStorage.setItem('token', data.token);
           alert('Connexion réussie');
-          // Redirection vers page profil ?!
+          window.location.href = '/profile/profile';
         } else {
           const errorData = await response.json();
           setErrors({ email: 'Email ou mot de passe incorrect' });
+          setErrors({ _error: errorData['hydra:description'] });
         }
       } catch (error) {
         console.error('Erreur:', error);
