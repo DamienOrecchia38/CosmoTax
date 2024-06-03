@@ -14,25 +14,25 @@ export default function Navbar({ onLoginClick, onSignUpClick }) {
         <div className="flex items-center space-x-2">
           <script src="https://cdn.lordicon.com/lordicon.js"></script>
           <lord-icon src="https://cdn.lordicon.com/fygyhyze.json" trigger="loop" stroke="bold" colors="primary:#e83a30,secondary:#ffd700" style={{ width: '40px', height: '40px' }}></lord-icon>
-          <button className="mr-4 px-6 py-3 bg-gradient-to-r from-yellow-300 to-yellow-500 text-gray-100 text-xl font-bold rounded-3xl hover:bg-yellow-500" onClick={onLoginClick}>Connexion</button>
+          <button className="mr-4 px-6 py-3 bg-gradient-to-r from-yellow-300 to-yellow-500 text-gray-100 text-xl font-bold rounded-3xl hover:bg-yellow-500 ripple" onClick={onLoginClick}>Connexion</button>
         </div>
 
         <div className="flex items-center space-x-2">
           <lord-icon src="https://cdn.lordicon.com/igljtrxq.json" trigger="loop" stroke="bold" colors="primary:#e83a30,secondary:#ffd700" style={{ width: '40px', height: '40px' }}></lord-icon>
-          <button className="px-6 py-3 bg-gradient-to-r from-yellow-300 to-yellow-500 text-gray-100 text-xl font-bold rounded-3xl hover:bg-yellow-500" onClick={onSignUpClick}>Inscription</button>
+          <button className="px-6 py-3 bg-gradient-to-r from-yellow-300 to-yellow-500 text-gray-100 text-xl font-bold rounded-3xl hover:bg-yellow-500 ripple" onClick={onSignUpClick}>Inscription</button>
         </div>
 
         <div className="flex items-center space-x-2">
           <lord-icon src="https://cdn.lordicon.com/xfzuyvam.json" trigger="loop" stroke="bold" colors="primary:#e83a30,secondary:#ffd700" style={{ width: '40px', height: '40px' }}></lord-icon>
           <Link href="/profile/profile">
-            <button className="px-6 py-3 bg-gradient-to-r from-yellow-300 to-yellow-500 text-gray-100 text-xl font-bold rounded-3xl hover:bg-yellow-500">Profil</button>
+            <button className="px-6 py-3 bg-gradient-to-r from-yellow-300 to-yellow-500 text-gray-100 text-xl font-bold rounded-3xl hover:bg-yellow-500 ripple">Profil</button>
           </Link>        
         </div>
 
         <div className="flex items-center space-x-2">
           <lord-icon src="https://cdn.lordicon.com/fhszghjk.json" trigger="loop" stroke="bold" colors="primary:#e83a30,secondary:#ffd700" style={{ width: '40px', height: '40px' }}></lord-icon>
           <Link href="payment/payment">
-            <button className="px-6 py-3 bg-gradient-to-r from-yellow-300 to-yellow-500 text-gray-100 text-xl font-bold rounded-3xl hover:bg-yellow-500">Paiement</button>
+            <button className="px-6 py-3 bg-gradient-to-r from-yellow-300 to-yellow-500 text-gray-100 text-xl font-bold rounded-3xl hover:bg-yellow-500 ripple">Paiement</button>
           </Link>
         </div>
 
