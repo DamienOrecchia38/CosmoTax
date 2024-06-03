@@ -39,6 +39,7 @@ class LoginController extends AbstractController
         }
     
         $token = $this->jwtEncoder->create($user);
+        
         return new JsonResponse(['token' => $token], Response::HTTP_OK);
     }
 }
