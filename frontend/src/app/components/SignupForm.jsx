@@ -1,107 +1,55 @@
 import { useFormik } from 'formik';
-
 import * as Yup from 'yup';
-
 import { FaEnvelope, FaLock, FaUser, FaHome, FaPhone, FaCreditCard, FaKey, FaCalendarAlt } from 'react-icons/fa';
 
-
-
 export default function SignUpForm() {
-
   const formik = useFormik({
-
     initialValues: {
-
       email: '',
-
       password: '',
-
       firstname: '',
-
       lastname: '',
-
       address: '',
-
       phone: '',
-
       cardNumber: '',
-
       cryptogram: '',
-
       expirationDate: '',
-
     },
-
     validationSchema: Yup.object({
-
       email: Yup.string().email('Adresse mail invalide').required('L\'adresse mail est requise'),
-
       password: Yup.string().min(6, 'Le mot de passe doit contenir au moins 6 caractères').required('Le mot de passe est requis'),
-
       firstname: Yup.string().required('Le prénom est requis'),
-
       lastname: Yup.string().required('Le nom est requis'),
-
       address: Yup.string().required('L\'adresse est requise'),
-
       phone: Yup.string().required('Le téléphone est requis'),
-
       cardNumber: Yup.string().required('Le numéro de carte bancaire est requis'),
-
       cryptogram: Yup.string().required('Le cryptogramme est requis'),
-
       expirationDate: Yup.date().required('La date d\'expiration est requise'),
-
     }),
-
     onSubmit: async (values, { setErrors, setSubmitting }) => {
-
       try {
-
         const response = await fetch('http://localhost:8000/api/users', {
-
           method: 'POST',
-
           headers: {
-
-            'Content-Type': 'application/json',
-
+            'Content-Type': 'application/ld+json',
           },
-
           body: JSON.stringify(values),
-
         });
 
-
-
         if (response.ok) {
-
           const data = await response.json();
-
           formik.resetForm();
-
           alert(data.message);
-
         } else {
-
           const errorData = await response.json();
-
           setErrors({ _error: errorData['hydra:description'] });
-
         }
-
       } catch (error) {
-
         console.error('Erreur:', error);
-
       }
 
-
-
       setSubmitting(false);
-
     },
-
   });
 
 
