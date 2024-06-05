@@ -1,6 +1,7 @@
 import { useFormik } from 'formik';
 import * as Yup from 'yup';
 import { FaEnvelope, FaLock, FaUser, FaHome, FaPhone, FaCreditCard, FaKey, FaCalendarAlt } from 'react-icons/fa';
+// import LoginForm from './components/LoginForm';
 
 export default function SignUpForm() {
   
@@ -41,6 +42,9 @@ export default function SignUpForm() {
           const data = await response.json();
           formik.resetForm();
           alert(data.message);
+          // <div className="min-h-screen flex items-center justify-center">
+          //   <LoginForm />
+          // </div>
         } else {
           const errorData = await response.json();
           setErrors({ _error: errorData['hydra:description'] });

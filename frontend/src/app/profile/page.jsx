@@ -1,9 +1,10 @@
 'use client';
 
 import { useEffect, useState } from 'react';
-import Navbar from '../../app/components/Navbar';
+import Navbar from '../../components/Navbar';
 
 export default function ProfilePage() {
+
   const [user, setUser] = useState(null);
 
   useEffect(() => {
@@ -29,14 +30,10 @@ export default function ProfilePage() {
     }
   };
 
-  if (!user) {
-    return <div>Chargement...</div>;
-  }
-
   return (
     <div className="container mx-auto mt-8">
       <Navbar />
-      <h1 className="text-4xl font-bold mb-6">Profil</h1>
+      <h1 className="text-4xl font-bold mb-6">Votre profil</h1>
       <div className="bg-white shadow-md rounded-lg p-6">
         <div className="mb-4">
           <label className="block text-gray-700 font-bold mb-2">Email :</label>

@@ -1,11 +1,9 @@
 'use client';
 
 import { useState } from 'react';
-import Navbar from './components/Navbar';
-import LoginForm from './components/LoginForm';
-import SignUpForm from './components/SignUpForm';
-import AlienAnimation from './components/AlienAnimation';
-import AnimatedTitle from './components/AnimatedTitle';
+import Navbar from '../components/Navbar';
+import LoginForm from '../components/LoginForm';
+import SignUpForm from '../components/SignUpForm';
 
 export default function Home() {
 
@@ -34,8 +32,6 @@ export default function Home() {
           <SignUpForm />
         </div>
       )}
-      <AnimatedTitle />
-      {/* <AlienAnimation /> */}
     </div>
   );
 }
