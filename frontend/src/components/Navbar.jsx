@@ -37,12 +37,12 @@ export default function Navbar({ onLoginClick, onSignUpClick, onHomeClick }) {
       <nav className="flex justify-between items-center p-4 bg-white bg-opacity-40">
 
         <Link href="/" className="flex items-center ml-4" onClick={onHomeClick}>
-          <img src="/alien_navbar.png" alt="Logo" className="w-20 h-15 mr-2" />
-          <div className="bg-gradient-to-r from-yellow-400 to-green-600 text-transparent bg-clip-text font-['Bangers'] text-5xl font-bold">CosmoTax</div>
+          <img src="/alien_navbar.png" alt="Alien logo" className="w-10 h-10 sm:w-18 sm:h-18 mr-2" />
+          <div className="bg-gradient-to-r from-yellow-400 to-green-600 text-transparent bg-clip-text font-['Bangers'] text-3xl sm:text-5xl font-bold">CosmoTax</div>
         </Link>
 
         <button className="md:hidden" onClick={() => setIsMenuOpen(!isMenuOpen)}>
-          <FaBars className="w-8 h-8" />
+          <FaBars className="w-8 h-8 text-orange-400" />
         </button>
 
         <div className={`md:flex items-center justify-end px-4 space-x-8 ${isMenuOpen ? 'block' : 'hidden'}`}>
