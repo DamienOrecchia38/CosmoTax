@@ -10,18 +10,21 @@ export default function AlienAnimation() {
     const animationDuration = 7000;
     
     const startAnimation = () => {
+      alien.style.position = 'absolute';
       alien.style.left = '50%';
       alien.style.top = '50%';
       alien.style.transform = 'translate(-50%, -50%) scale(0.5)';
       
       alien.animate([
         { transform: 'translate(-50%, -50%) scale(0.5)' },
-        { transform: 'translate(-50%, -50%) scale(1)' },
+        { transform: 'translate(-50%, -50%) scale(0.8)' },
         { transform: 'translate(-50%, -50%) scale(0.5)' }
       ], {
         duration: animationDuration,
       });
     };
+
+    startAnimation();
 
     const intervalId = setInterval(startAnimation, animationDuration);
 
@@ -31,11 +34,13 @@ export default function AlienAnimation() {
   }, []);
 
   return (
-    <img
-      ref={alienRef}
-      src="/alien_navbar.png"
-      alt="Alien"
-      className="fixed"
-    />
+    <div className="relative w-full h-full">
+      <img
+        ref={alienRef}
+        src="/alien_navbar.png"
+        alt="Alien"
+        className="absolute"
+      />
+    </div>
   );
 }
