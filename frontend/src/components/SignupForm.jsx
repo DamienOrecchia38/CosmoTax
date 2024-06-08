@@ -1,10 +1,14 @@
+import { useState } from 'react';
 import { useFormik } from 'formik';
 import * as Yup from 'yup';
 import { FaEnvelope, FaLock, FaUser, FaHome, FaPhone, FaCreditCard, FaKey, FaCalendarAlt } from 'react-icons/fa';
-// import LoginForm from './components/LoginForm';
+import LoginForm from './LoginForm';
 
 export default function SignUpForm() {
   
+  const [showProgressBar, setShowProgressBar] = useState(false);
+  const [showLoginForm, setShowLoginForm] = useState(false);
+
   const formik = useFormik({
     initialValues: {
       email: '',
@@ -39,12 +43,12 @@ export default function SignUpForm() {
         });
 
         if (response.ok) {
-          const data = await response.json();
           formik.resetForm();
-          alert(data.message);
-          // <div className="min-h-screen flex items-center justify-center">
-          //   <LoginForm />
-          // </div>
+          setShowProgressBar(true);
+          setTimeout(() => {
+            setShowProgressBar(false);
+            setShowLoginForm(true);
+          }, 10000);
         } else {
           const errorData = await response.json();
           setErrors({ _error: errorData['hydra:description'] });
@@ -60,8 +64,23 @@ export default function SignUpForm() {
 
 
   return (
-
+    <>
+      {showLoginForm ? (
+        <LoginForm />
+      ) : (    
     <form onSubmit={formik.handleSubmit} className="bg-white bg-opacity-20 shadow-lg backdrop-blur-sm rounded-2xl px-16 pt-8 pb-10 mb-6 mx-auto max-w-4xl text-center">
+
+      {showProgressBar ? (
+        <div className="flex flex-col items-center justify-center">
+          <div className="bg-white w-full rounded-full mb-4">
+            <div className="progress-bar w-full rounded-full"></div>
+          </div>
+          <script src="https://cdn.lordicon.com/lordicon.js"></script>
+          <lord-icon src="https://cdn.lordicon.com/tltikfri.json" trigger="loop" stroke="bold" colors="primary:#e83a30,secondary:#ffd700" style={{ width: '75px', height: '75px' }}></lord-icon>
+          <p className="text-4xl font-bold italic mt-4 mb-4 bg-gradient-to-r from-yellow-400 to-green-600 text-transparent bg-clip-text flex items-center justify-center">Envoie de vos données à la galaxie d'Andromède...</p>
+        </div>
+      ) : (
+        <>
 
       <h2 className="text-5xl font-bold mb-10 bg-gradient-to-r from-yellow-400 to-green-600 text-transparent bg-clip-text flex items-center justify-center">Inscription</h2>
 
@@ -184,6 +203,10 @@ export default function SignUpForm() {
         Let's go !
       </button>
 
-    </form>
+            </>
+          )}
+        </form>
+      )}
+    </>
   );
 }
