@@ -5,7 +5,6 @@ import * as Yup from 'yup';
 import Confetti from 'react-dom-confetti';
 import { useState } from 'react';
 import Navbar from '../../components/Navbar';
-import AlienAnimation from '../../components/AlienAnimation';
 import AnimatedTitle from '../../components/AnimatedTitle';
 
 export default function PaymentPage() {
@@ -52,7 +51,6 @@ export default function PaymentPage() {
     <div className="container mx-auto">
       <Navbar />
       <AnimatedTitle />
-      <AlienAnimation />
       <form onSubmit={formik.handleSubmit}>
         
         <div className="mb-4 text-left relative">
