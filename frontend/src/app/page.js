@@ -4,6 +4,8 @@ import { useState } from 'react';
 import Navbar from '../components/Navbar';
 import LoginForm from '../components/LoginForm';
 import SignUpForm from '../components/SignUpForm';
+import TaxCarousel from '../components/TaxCarousel';
+import CustomerTestimonials from '../components/CustomerTestimonials';
 
 export default function Home() {
 
@@ -20,6 +22,10 @@ export default function Home() {
         onSignUpClick={() => {
           setShowSignUpForm(true);
           setShowLoginForm(false);
+        }}
+        onHomeClick={() => {
+          setShowLoginForm(false);
+          setShowSignUpForm(false);
         }} 
       />
       {showLoginForm && (
@@ -31,6 +37,12 @@ export default function Home() {
         <div className="min-h-screen flex items-center justify-center">
           <SignUpForm />
         </div>
+      )}
+      {!showLoginForm && !showSignUpForm && (
+        <>
+          <TaxCarousel />
+          <CustomerTestimonials />
+        </>
       )}
     </div>
   );
