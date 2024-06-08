@@ -91,7 +91,7 @@ export default function LoginForm() {
             <input
               type="password"
               id="password"
-              placeholder="Mot de passe cosmic"
+              placeholder="Mot de passe cosmique"
               {...formik.getFieldProps('password')}
               className={`pl-12 shadow-inner appearance-none border rounded-2xl w-full py-5 px-5 text-gray-700 leading-tight focus:outline-none focus:shadow-outline hover:shadow-lg ${formik.touched.password && formik.errors.password ? 'border-red-500' : ''}`}
             />
