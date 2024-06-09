@@ -22,12 +22,29 @@ class TaxController extends AbstractController
         return $this->json($taxes, 200, [], ['groups' => 'tax:read']);
     }
 
+    
+    // Vérification du numéro d'identification de règlement
+
+    // #[Route('/api/check-unique-code', name: 'check_unique_code', methods: ['POST'])]
+    // public function checkUniqueCode(Request $request): Response
+    // {
+    //     $requestContent = json_decode($request->getContent(), true);
+    //     $uniqueCode = $requestContent['uniqueCode'];
+    //     $payment = $this->entityManager->getRepository(Payment::class)->findOneBy(['uniqueCode' => $uniqueCode]);
+
+    //     if ($payment) {
+    //         return new Response('Code unique valide', Response::HTTP_OK);
+    //     } else {
+    //         return new Response('Code unique invalide', Response::HTTP_UNAUTHORIZED);
+    //     }
+    // }
+
+
     // #[Route('/api/payments', name: 'app_payment', methods: ['POST'])]
     // public function index(Request $request): Response
     // {
     //     $data = json_decode($request->getContent(), true);
 
-    //     // Vérification du numéro d'identification de règlement
     //     // Vérification des informations bancaires via l'algorithme de Luhn
     //     // Enregistrement du paiement
     //     // Envoi d'un email de confirmation

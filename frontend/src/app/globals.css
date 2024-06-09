@@ -61,6 +61,11 @@ body {
   transition: 0s;
 }
 
+@keyframes progress {
+  0% { transform: scaleX(0); }
+  100% { transform: scaleX(1); }
+}
+
 .progress-bar {
   width: 100%;
   height: 40px;
@@ -69,7 +74,15 @@ body {
   transform-origin: left;
 }
 
-@keyframes progress {
-  0% { transform: scaleX(0); }
-  100% { transform: scaleX(1); }
+@keyframes alienMove {
+  0% {
+    transform: translateX(-100%);
+  }
+  100% {
+    transform: translateX(100%);
+  }
+}
+
+.alien-move {
+  animation: alienMove 5s linear infinite;
 }
