@@ -29,7 +29,7 @@ export const Stars = ({ visible }) => {
       });
     };
   
-    const stars = Array.from({ length: 15 }, (_, i) => {
+    const stars = Array.from({ length: 20 }, (_, i) => {
 
       const top = Math.random() * 150;
       const left = Math.random() * 150;
