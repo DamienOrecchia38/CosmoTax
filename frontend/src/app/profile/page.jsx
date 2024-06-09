@@ -316,6 +316,22 @@ export default function ProfilePage() {
 
       <div className="p-10 mx-20 mt-20 mb-20 bg-white rounded-lg shadow-lg backdrop-blur-sm">
         <h2 className="text-5xl font-bold font-['Bangers'] mb-10 bg-gradient-to-r from-green-500 to-green-600 text-transparent bg-clip-text tracking-wider">Historique des paiements</h2>
+        <div className="grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-3">
+          {taxes.filter(tax => tax.paid).map(tax => (
+            <div key={tax.id} className="relative p-4 bg-gradient-to-r from-green-100 to-green-100 bg-opacity-30 rounded-xl">
+              <img src={`/images/taxes/${tax.title.replace(/\s+/g, '_').toLowerCase()}.jpg`} alt={tax.title} className="w-full h-[30rem] object-cover mb-4 rounded-t-xl filter grayscale blur-sm" />
+              <div className="absolute inset-0 flex items-center justify-center">
+                <div className="flex flex-col items-center">
+                  <FaCheck className="text-green-500 text-6xl mb-2" />
+                  <p className="text-5xl font-bold text-green-500">Payé</p>
+                </div>
+              </div>
+              <p className="mb-4 text-xl font-bold">{tax.title}</p>
+              <p className="mb-4">{tax.description}</p>
+              <p className="text-2xl font-bold">{tax.amount} €</p>
+            </div>
+          ))}
+        </div>
       </div>
     </div>
   );

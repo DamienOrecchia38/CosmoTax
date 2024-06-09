@@ -7,12 +7,14 @@ export default function Navbar({ onLoginClick, onSignUpClick, onHomeClick }) {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [firstName, setFirstName] = useState('');
   const [isMenuOpen, setIsMenuOpen] = useState(false);
+  const [unpaidTaxes, setUnpaidTaxes] = useState(0);
 
   useEffect(() => {
     const token = localStorage.getItem('token');
     setIsLoggedIn(!!token);
     if (token) {
       fetchUserProfile();
+      fetchUnpaidTaxes();
     }
   }, []);
 
@@ -27,6 +29,24 @@ export default function Navbar({ onLoginClick, onSignUpClick, onHomeClick }) {
       if (response.ok) {
         const data = await response.json();
         setFirstName(data.firstName);
+      }
+    } catch (error) {
+      console.error('Erreur:', error);
+    }
+  };
+
+  const fetchUnpaidTaxes = async () => {
+    try {
+      const response = await fetch('http://localhost:8000/api/taxes', {
+        headers: {
+          'Authorization': `Bearer ${localStorage.getItem('token')}`,
+        },
+      });
+  
+      if (response.ok) {
+        const data = await response.json();
+        const unpaid = data['hydra:member'].filter(tax => !tax.paid).length;
+        setUnpaidTaxes(unpaid);
       }
     } catch (error) {
       console.error('Erreur:', error);
@@ -51,7 +71,7 @@ export default function Navbar({ onLoginClick, onSignUpClick, onHomeClick }) {
 
             {!isLoggedIn && (
               <div className="flex items-center space-x-2">
-                <button className="flex items-center px-5 py-2 text-xl font-bold text-gray-100 bg-gradient-to-r from-yellow-300 to-yellow-500 rounded-3xl hover:bg-yellow-500 ripple" onClick={onSignUpClick}>
+                <button className="flex items-center px-5 py-1 text-xl font-bold text-gray-100 bg-gradient-to-r from-yellow-300 to-yellow-500 rounded-2xl hover:bg-yellow-500 ripple" onClick={onSignUpClick}>
                   <lord-icon src="https://cdn.lordicon.com/igljtrxq.json" trigger="loop-on-hover" stroke="bold" colors="primary:#c7c116,secondary:#c76f16" style={{ width: '30px', height: '30px', marginRight: '8px' }}></lord-icon>
                   Inscription
                 </button>
@@ -60,7 +80,7 @@ export default function Navbar({ onLoginClick, onSignUpClick, onHomeClick }) {
 
             {!isLoggedIn && (
               <div className="flex items-center space-x-2">
-                <button className="flex items-center px-5 py-2 mr-4 text-xl font-bold text-gray-100 bg-gradient-to-r from-yellow-300 to-yellow-500 rounded-3xl hover:bg-yellow-500 ripple" onClick={onLoginClick}>
+                <button className="flex items-center px-5 py-1 mr-4 text-xl font-bold text-gray-100 bg-gradient-to-r from-yellow-300 to-yellow-500 rounded-2xl hover:bg-yellow-500 ripple" onClick={onLoginClick}>
                   <lord-icon src="https://cdn.lordicon.com/fygyhyze.json" trigger="loop-on-hover" stroke="bold" colors="primary:#c7c116,secondary:#c76f16" style={{ width: '30px', height: '30px', marginRight: '8px' }}></lord-icon>
                   Connexion
                 </button>
@@ -70,9 +90,14 @@ export default function Navbar({ onLoginClick, onSignUpClick, onHomeClick }) {
             {isLoggedIn && (
               <div className="flex items-center space-x-2">
                 <Link href="/profile">
-                  <button className="flex items-center px-5 py-2 text-xl font-bold text-gray-100 bg-gradient-to-r from-yellow-300 to-yellow-500 rounded-3xl hover:bg-yellow-500 ripple">
+                  <button className="relative flex items-center px-5 py-1 text-xl font-bold text-gray-100 bg-gradient-to-r from-yellow-300 to-yellow-500 rounded-2xl hover:bg-yellow-500 ripple">
                     <lord-icon src="https://cdn.lordicon.com/xfzuyvam.json" trigger="loop-on-hover" stroke="bold" colors="primary:#c7c116,secondary:#c76f16" style={{ width: '30px', height: '30px', marginRight: '8px' }}></lord-icon>
                     {firstName ? firstName : 'Profil'}
+                    {unpaidTaxes > 0 && (
+                      <span className="absolute top-0 right-0 inline-flex items-center justify-center px-2 py-1 text-xs font-bold leading-none text-red-100 bg-red-600 rounded-full">
+                        {unpaidTaxes}
+                      </span>
+                    )}
                   </button>
                 </Link>        
               </div>
@@ -81,7 +106,7 @@ export default function Navbar({ onLoginClick, onSignUpClick, onHomeClick }) {
             {isLoggedIn && (
               <div className="flex items-center space-x-2">
                 <Link href="/payment">
-                  <button className="flex items-center px-5 py-2 text-xl font-bold text-gray-100 bg-gradient-to-r from-yellow-300 to-yellow-500 rounded-3xl hover:bg-yellow-500 ripple">
+                  <button className="flex items-center px-5 py-1 text-xl font-bold text-gray-100 bg-gradient-to-r from-yellow-300 to-yellow-500 rounded-2xl hover:bg-yellow-500 ripple">
                     <lord-icon src="https://cdn.lordicon.com/fhszghjk.json" trigger="loop-on-hover" stroke="bold" colors="primary:#c7c116,secondary:#c76f16" style={{ width: '30px', height: '30px', marginRight: '8px' }}></lord-icon>
                     Paiement
                   </button>
@@ -92,7 +117,7 @@ export default function Navbar({ onLoginClick, onSignUpClick, onHomeClick }) {
             {isLoggedIn && (
               <div className="flex items-center space-x-2">
                 <Link href="/">
-                  <button className="flex items-center px-5 py-2 text-xl font-bold text-gray-100 bg-gradient-to-r from-yellow-300 to-yellow-500 rounded-3xl hover:bg-yellow-500 ripple" onClick={() => {localStorage.removeItem("token"); setIsLoggedIn(false);}}>
+                  <button className="flex items-center px-5 py-1 text-xl font-bold text-gray-100 bg-gradient-to-r from-yellow-300 to-yellow-500 rounded-2xl hover:bg-yellow-500 ripple" onClick={() => {localStorage.removeItem("token"); setIsLoggedIn(false);}}>
                     <lord-icon src="https://cdn.lordicon.com/peeuicbd.json" trigger="loop-on-hover" stroke="bold" colors="primary:#c7c116,secondary:#c76f16" style={{ width: '30px', height: '30px', marginRight: '8px' }}></lord-icon>
                     Déconnexion
                   </button>
