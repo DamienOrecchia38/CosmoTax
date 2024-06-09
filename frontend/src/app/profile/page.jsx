@@ -117,6 +117,7 @@ export default function ProfilePage() {
     let num1 = Math.floor(Math.random() * 99) + 1;
     let num2 = 100 - num1;
     const code = `${firstLetter}${secondLetter}${currentYear}_${num1}_${num2}`;
+    document.getElementById('clickSound').play();
     setActiveButton(taxId);
     setStarsVisible(true);
     setTimeout(() => {
@@ -133,6 +134,8 @@ export default function ProfilePage() {
     <div className="container mx-auto">
 
       <Navbar />
+
+      <audio id="clickSound" src="/sounds/click.mp3"></audio>
 
       {showModal && (
         <div className="fixed inset-0 z-50 flex items-center justify-center">
