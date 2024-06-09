@@ -39,7 +39,7 @@ export default function CustomerTestimonials() {
   }, [testimonials.length]);
 
   return (
-    <div className="bg-white bg-opacity-80 shadow-lg backdrop-blur-sm shadow-xl rounded-xl p-10 my-20 mx-auto max-w-6xl">
+    <div className="bg-white bg-opacity-80 backdrop-blur-sm shadow-xl rounded-xl p-10 my-20 mx-auto max-w-6xl">
       <h2 className="bg-gradient-to-r from-yellow-400 to-green-600 text-transparent bg-clip-text text-5xl font-bold font-['Bangers'] tracking-wider mb-10 text-center">Ce que nos clients intergalactiques disent de nous !</h2>
       <motion.div 
         key={currentTestimonial}
