@@ -58,24 +58,24 @@ export default function LoginForm() {
   });
 
   return (
-    <form onSubmit={formik.handleSubmit} className="bg-white bg-opacity-20 shadow-lg backdrop-blur-sm rounded-3xl px-16 pt-12 pb-14 mb-6 mx-auto max-w-4xl text-center">
+    <form onSubmit={formik.handleSubmit} className="max-w-4xl px-16 pt-12 mx-auto mb-6 text-center bg-white shadow-lg bg-opacity-20 backdrop-blur-sm rounded-3xl pb-14">
       {showProgressBar ? (
         <div className="flex flex-col items-center justify-center">
-          <div className="bg-white w-full rounded-full mb-4">
-            <div className="progress-bar w-full rounded-full"></div>
+          <div className="w-full mb-4 bg-white rounded-full">
+            <div className="w-full rounded-full progress-bar"></div>
           </div>
           <script src="https://cdn.lordicon.com/lordicon.js"></script>
           <lord-icon src="https://cdn.lordicon.com/osckrizz.json" trigger="loop" stroke="bold" colors="primary:#e83a30,secondary:#ffd700" style={{ width: '65px', height: '65px' }}></lord-icon>
-          <p className="text-4xl font-bold italic mt-4 mb-4 bg-gradient-to-r from-yellow-400 to-green-600 text-transparent bg-clip-text flex items-center justify-center">Récupération de vos informations intergalactiques...</p>
+          <p className="flex items-center justify-center mt-4 mb-4 text-4xl italic font-bold text-transparent bg-gradient-to-r from-yellow-400 to-green-600 bg-clip-text">Récupération de vos informations intergalactiques...</p>
         </div>
       ) : (
         <>
-          <h2 className="text-5xl font-bold mb-10 bg-gradient-to-r from-yellow-400 to-green-600 text-transparent bg-clip-text flex items-center justify-center">Connexion</h2>
+          <h2 className="flex items-center justify-center mb-10 text-5xl font-bold text-transparent bg-gradient-anim bg-clip-text animate-gradientX">Connexion</h2>
           
           {formik.errors.email && <p className="text-red-500">{formik.errors.email}</p>}
 
-          <div className="mb-8 text-left relative">
-            <FaUser className="absolute left-4 top-1/2 transform -translate-y-1/2 text-black" />
+          <div className="relative mb-8 text-left">
+            <FaUser className="absolute text-black transform -translate-y-1/2 left-4 top-1/2" />
             <input 
               type="email"
               id="email"
@@ -83,11 +83,11 @@ export default function LoginForm() {
               {...formik.getFieldProps('email')}
               className={`pl-12 shadow-inner appearance-none border rounded-2xl w-full py-5 px-5 text-gray-700 leading-tight focus:outline-none focus:shadow-outline hover:shadow-lg ${formik.touched.email && formik.errors.email ? 'border-red-500' : ''}`}
             />
-            {formik.touched.email && formik.errors.email && (<p className="text-red-500 text-sm italic">{formik.errors.email}</p>)}
+            {formik.touched.email && formik.errors.email && (<p className="text-sm italic text-red-500">{formik.errors.email}</p>)}
           </div>
 
-          <div className="mb-10 text-left relative">
-            <FaLock className="absolute left-4 top-1/2 transform -translate-y-1/2 text-black" />
+          <div className="relative mb-10 text-left">
+            <FaLock className="absolute text-black transform -translate-y-1/2 left-4 top-1/2" />
             <input
               type="password"
               id="password"
@@ -95,13 +95,13 @@ export default function LoginForm() {
               {...formik.getFieldProps('password')}
               className={`pl-12 shadow-inner appearance-none border rounded-2xl w-full py-5 px-5 text-gray-700 leading-tight focus:outline-none focus:shadow-outline hover:shadow-lg ${formik.touched.password && formik.errors.password ? 'border-red-500' : ''}`}
             />
-            {formik.touched.password && formik.errors.password && (<p className="text-red-500 text-sm italic">{formik.errors.password}</p>)}
+            {formik.touched.password && formik.errors.password && (<p className="text-sm italic text-red-500">{formik.errors.password}</p>)}
           </div>
 
           <button 
             type="submit"
             disabled={formik.isSubmitting}
-            className="bg-gradient-to-r from-yellow-300 to-yellow-500 hover:from-yellow-500 hover:to-yellow-700 text-white text-xl font-bold py-5 px-10 rounded-3xl focus:outline-none focus:shadow-outline"
+            className="px-10 py-5 text-xl font-bold text-white bg-gradient-to-r from-yellow-300 to-yellow-500 hover:from-yellow-500 hover:to-yellow-700 rounded-3xl focus:outline-none focus:shadow-outline"
           >
             Se connecter
           </button>
