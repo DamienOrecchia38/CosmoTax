@@ -23,7 +23,7 @@ export default function PaymentPage() {
         setShowCountdown(false);
         setAlienAttack(true);
         addAlienHead();
-      }, 10000);
+      }, 15000);
 
       return () => clearTimeout(timer);
     }
@@ -121,32 +121,16 @@ export default function PaymentPage() {
       {alienAttack && (
         <div className="fixed inset-0 flex items-center justify-center z-50">
           <div className="relative">
-            <img 
-              src="/images/alien_attack.png" 
-              alt="Alien Attack" 
-              className="w-screen h-40 object-cover absolute bottom-0 alien-move"
-            />
-            <audio autoPlay>
-              <source src="/sounds/alien_noise.mp3" type="audio/mpeg" />
-            </audio>
+            <img src="/alien_attack.png" alt="Alien Attack" className="w-screen h-40 object-cover absolute bottom-0 alien-move"/>
+            <audio autoPlay><source src="/sounds/alien_scream.mp3" type="audio/mpeg" /></audio>
           </div>
         </div>
       )}
 
       {alienHeads.map((head) => (
-        <div
-          key={head.id}
-          style={{ top: head.top, left: head.left }}
-          className="absolute"
-        >
-          <img 
-            src="/alien_favicon.png"
-            alt="Alien Head"
-            className="w-16 h-16"
-          />
-          <audio autoPlay>
-            <source src="/sounds/pop.mp3" type="audio/mpeg" />
-          </audio>
+        <div key={head.id} style={{ top: head.top, left: head.left }} className="absolute">
+          <img src="/alien_favicon.png" alt="Alien Head" className="w-16 h-16"/>
+          <audio autoPlay><source src="/sounds/pop.mp3" type="audio/mpeg" /></audio>
         </div>
       ))}
 

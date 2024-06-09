@@ -74,7 +74,7 @@ body {
   transform-origin: left;
 }
 
-@keyframes alienMove {
+@keyframes alien-move {
   0% {
     transform: translateX(-100%);
   }
@@ -84,5 +84,5 @@ body {
 }
 
 .alien-move {
-  animation: alienMove 5s linear infinite;
+  animation: alien-move 10s linear infinite;
 }
