@@ -6,6 +6,7 @@ import AlienAnimation from '../../components/AlienAnimation';
 import { FaUserEdit, FaSave, FaTimes, FaCopy, FaCheck } from 'react-icons/fa';
 import { DNA, MagnifyingGlass } from 'react-loader-spinner';
 import Confetti from 'react-dom-confetti';
+import { Stars } from '../../components/StarsButton';
 
 export default function ProfilePage() {
   
@@ -17,6 +18,7 @@ export default function ProfilePage() {
   const [showModal, setShowModal] = useState(false);
   const [uniqueCode, setUniqueCode] = useState('');
   const [isCopied, setIsCopied] = useState(false);
+  const [starsVisible, setStarsVisible] = useState(false);
   const [activeButton, setActiveButton] = useState(null);
 
   useEffect(() => {
@@ -116,11 +118,15 @@ export default function ProfilePage() {
     let num2 = 100 - num1;
     const code = `${firstLetter}${secondLetter}${currentYear}_${num1}_${num2}`;
     setActiveButton(taxId);
+    setStarsVisible(true);
+    setTimeout(() => {
+      setStarsVisible(false);
+    }, 500);
     setUniqueCode(code);
     setIsCopied(false);
     setTimeout(() => {
       setShowModal(true);
-    }, 500); 
+    }, 800); 
   };
 
   return (
@@ -281,11 +287,14 @@ export default function ProfilePage() {
                 <p className="mb-4">{tax.description}</p>
                 <div className="flex flex-col items-center justify-between">
                   <p className="mb-4 text-2xl font-bold">{tax.amount} €</p>
-                  <button 
+                  <button
                     onClick={() => generateUniqueCode(tax.id)}
-                    className="px-4 py-2 mb-4 text-xl font-bold text-white bg-gradient-to-r from-green-400 to-green-600 hover:from-green-500 hover:to-green-700 rounded-3xl"
-                    >
-                    Générer le code unique
+                    className="px-6 py-2 mb-4 text-xl font-bold text-white transition-all duration-500 ease-in-out transform shadow-md rounded-3xl bg-gradient-to-r from-green-400 via-green-500 to-yellow-500 hover:scale-105 hover:from-green-500 hover:to-yellow-500 hover:shadow-xl backdrop-filter backdrop-brightness-150"
+                  >
+                    <div style={{ position: 'relative', display: 'inline-block' }}>
+                      Générer le code unique
+                      {activeButton === tax.id && <Stars visible={starsVisible} />}
+                    </div>
                     <Confetti active={ activeButton === tax.id } config={ config }/>
                   </button>                 
                 </div>
