@@ -7,12 +7,21 @@ module.exports = {
   ],
   theme: {
     extend: {
-      backgroundImage: {
-        "gradient-radial": "radial-gradient(var(--tw-gradient-stops))",
-        "gradient-conic":
-          "conic-gradient(from 180deg at 50% 50%, var(--tw-gradient-stops))",
+      keyframes: {
+        gradientX: {
+          '0%': { 'background-size': '200% 100%', 'background-position': 'right bottom' },
+          '50%': { 'background-size': '200% 100%', 'background-position': 'left bottom' },
+          '100%': { 'background-size': '200% 100%', 'background-position': 'right bottom' },
+        }
       },
+      animation: {
+        gradientX: 'gradientX 5s ease infinite',
+      },
+      backgroundImage: theme => ({
+        'gradient-anim': 'linear-gradient(270deg, ' + theme('colors.yellow.400') + ', ' + theme('colors.yellow.500') + ', ' + theme('colors.yellow.600') + ', ' + theme('colors.green.400') + ', ' + theme('colors.green.600') + ')',
+      }),
     },
   },
+  variants: {},
   plugins: [],
 };
