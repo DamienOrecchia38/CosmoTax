@@ -47,8 +47,8 @@ export default function TaxCarousel() {
   return (
     <div className="text-center">
       {loading ? (
-        <div className="flex flex-col justify-center items-center h-screen">
-        <p className="bg-gradient-to-r from-yellow-400 to-green-600 text-transparent bg-clip-text text-3xl sm:text-4xl md:text-5xl lg:text-7xl font-bold italic font-['Bangers'] tracking-wider mt-20 mb-10">Chargement galactique en cours...</p>
+        <div className="flex flex-col items-center justify-center h-screen">
+        <p className="bg-gradient-anim text-transparent bg-clip-text animate-gradientX text-3xl sm:text-4xl md:text-5xl lg:text-7xl font-bold italic font-['Bangers'] tracking-wider mt-20 mb-10">Chargement galactique en cours...</p>
         <RotatingLines
           strokeColor="#006400"
           strokeWidth="5"
@@ -59,13 +59,13 @@ export default function TaxCarousel() {
       </div>
       ) : (
         <>
-          <h1 className="bg-gradient-to-r from-yellow-400 to-green-600 text-transparent bg-clip-text text-3xl sm:text-4xl md:text-5xl lg:text-7xl font-bold font-['Bangers'] tracking-wider mt-20 mb-20">Payez toutes les taxes de la galaxie au même endroit !</h1>
-          <div className="bg-white bg-opacity-30 shadow-lg backdrop-blur-sm">
+          <h1 className="bg-gradient-anim text-transparent bg-clip-text animate-gradientX text-3xl sm:text-4xl md:text-5xl lg:text-7xl font-bold font-['Bangers'] tracking-wider mt-20 mb-20">Payez toutes les taxes de la galaxie au même endroit !</h1>
+          <div className="bg-white shadow-lg bg-opacity-30 backdrop-blur-sm">
             <Slider {...settings}>
               {taxes.map(tax => (
-                <div key={tax.id} className="text-center mt-20 mb-10 px-4 sm:px-6 lg:px-8">
+                <div key={tax.id} className="px-4 mt-20 mb-10 text-center sm:px-6 lg:px-8">
                   <img src={`/images/taxes/${tax.title.replace(/\s+/g, '_').toLowerCase()}.jpg`} alt={tax.title} className="w-full h-48 sm:h-64 md:h-80 lg:h-[30rem] object-cover mb-4 rounded-xl" />
-                  <p className="text-2xl font-bold mb-4">{tax.title}</p>
+                  <p className="mb-4 text-2xl font-bold">{tax.title}</p>
                   <p className="mb-4">{tax.description}</p>
                   <p className="text-2xl font-bold">{tax.amount} €</p>
                 </div>
