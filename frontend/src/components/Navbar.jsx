@@ -34,11 +34,11 @@ export default function Navbar({ onLoginClick, onSignUpClick, onHomeClick }) {
   };
 
   return (
-      <nav className="flex justify-between items-center p-4 bg-white bg-opacity-40">
+      <nav className="flex items-center justify-between p-4 bg-white bg-opacity-40">
 
         <Link href="/" className="flex items-center ml-4" onClick={onHomeClick}>
-          <img src="/alien_navbar.png" alt="Alien logo" className="w-10 h-10 sm:w-18 sm:h-18 mr-2" />
-          <div className="bg-gradient-to-r from-yellow-400 to-green-600 text-transparent bg-clip-text font-['Bangers'] text-3xl sm:text-5xl font-bold">CosmoTax</div>
+          <img src="/alien_navbar.png" alt="Alien logo" className="w-10 h-10 mr-2 sm:w-18 sm:h-18" />
+          <div className="font-['Bangers'] text-3xl sm:text-5xl font-bold bg-gradient-anim text-transparent bg-clip-text animate-gradientX">CosmoTax</div>
         </Link>
 
         <button className="md:hidden" onClick={() => setIsMenuOpen(!isMenuOpen)}>
@@ -46,12 +46,12 @@ export default function Navbar({ onLoginClick, onSignUpClick, onHomeClick }) {
         </button>
 
         <div className={`md:flex items-center justify-end px-4 space-x-8 ${isMenuOpen ? 'block' : 'hidden'}`}>
-          <div className="container mx-auto flex items-center justify-end px-4 space-x-8">
+          <div className="container flex items-center justify-end px-4 mx-auto space-x-8">
             <script src="https://cdn.lordicon.com/lordicon.js"></script>
 
             {!isLoggedIn && (
               <div className="flex items-center space-x-2">
-                <button className="px-5 py-2 bg-gradient-to-r from-yellow-300 to-yellow-500 text-gray-100 text-xl font-bold rounded-3xl hover:bg-yellow-500 ripple flex items-center" onClick={onSignUpClick}>
+                <button className="flex items-center px-5 py-2 text-xl font-bold text-gray-100 bg-gradient-to-r from-yellow-300 to-yellow-500 rounded-3xl hover:bg-yellow-500 ripple" onClick={onSignUpClick}>
                   <lord-icon src="https://cdn.lordicon.com/igljtrxq.json" trigger="loop-on-hover" stroke="bold" colors="primary:#c7c116,secondary:#c76f16" style={{ width: '30px', height: '30px', marginRight: '8px' }}></lord-icon>
                   Inscription
                 </button>
@@ -60,7 +60,7 @@ export default function Navbar({ onLoginClick, onSignUpClick, onHomeClick }) {
 
             {!isLoggedIn && (
               <div className="flex items-center space-x-2">
-                <button className="mr-4 px-5 py-2 bg-gradient-to-r from-yellow-300 to-yellow-500 text-gray-100 text-xl font-bold rounded-3xl hover:bg-yellow-500 ripple flex items-center" onClick={onLoginClick}>
+                <button className="flex items-center px-5 py-2 mr-4 text-xl font-bold text-gray-100 bg-gradient-to-r from-yellow-300 to-yellow-500 rounded-3xl hover:bg-yellow-500 ripple" onClick={onLoginClick}>
                   <lord-icon src="https://cdn.lordicon.com/fygyhyze.json" trigger="loop-on-hover" stroke="bold" colors="primary:#c7c116,secondary:#c76f16" style={{ width: '30px', height: '30px', marginRight: '8px' }}></lord-icon>
                   Connexion
                 </button>
@@ -70,7 +70,7 @@ export default function Navbar({ onLoginClick, onSignUpClick, onHomeClick }) {
             {isLoggedIn && (
               <div className="flex items-center space-x-2">
                 <Link href="/profile">
-                  <button className="px-5 py-2 bg-gradient-to-r from-yellow-300 to-yellow-500 text-gray-100 text-xl font-bold rounded-3xl hover:bg-yellow-500 ripple flex items-center">
+                  <button className="flex items-center px-5 py-2 text-xl font-bold text-gray-100 bg-gradient-to-r from-yellow-300 to-yellow-500 rounded-3xl hover:bg-yellow-500 ripple">
                     <lord-icon src="https://cdn.lordicon.com/xfzuyvam.json" trigger="loop-on-hover" stroke="bold" colors="primary:#c7c116,secondary:#c76f16" style={{ width: '30px', height: '30px', marginRight: '8px' }}></lord-icon>
                     {firstName ? firstName : 'Profil'}
                   </button>
@@ -81,7 +81,7 @@ export default function Navbar({ onLoginClick, onSignUpClick, onHomeClick }) {
             {isLoggedIn && (
               <div className="flex items-center space-x-2">
                 <Link href="/payment">
-                  <button className="px-5 py-2 bg-gradient-to-r from-yellow-300 to-yellow-500 text-gray-100 text-xl font-bold rounded-3xl hover:bg-yellow-500 ripple flex items-center">
+                  <button className="flex items-center px-5 py-2 text-xl font-bold text-gray-100 bg-gradient-to-r from-yellow-300 to-yellow-500 rounded-3xl hover:bg-yellow-500 ripple">
                     <lord-icon src="https://cdn.lordicon.com/fhszghjk.json" trigger="loop-on-hover" stroke="bold" colors="primary:#c7c116,secondary:#c76f16" style={{ width: '30px', height: '30px', marginRight: '8px' }}></lord-icon>
                     Paiement
                   </button>
@@ -92,7 +92,7 @@ export default function Navbar({ onLoginClick, onSignUpClick, onHomeClick }) {
             {isLoggedIn && (
               <div className="flex items-center space-x-2">
                 <Link href="/">
-                  <button className="px-5 py-2 bg-gradient-to-r from-yellow-300 to-yellow-500 text-gray-100 text-xl font-bold rounded-3xl hover:bg-yellow-500 ripple flex items-center" onClick={() => {localStorage.removeItem("token"); setIsLoggedIn(false);}}>
+                  <button className="flex items-center px-5 py-2 text-xl font-bold text-gray-100 bg-gradient-to-r from-yellow-300 to-yellow-500 rounded-3xl hover:bg-yellow-500 ripple" onClick={() => {localStorage.removeItem("token"); setIsLoggedIn(false);}}>
                     <lord-icon src="https://cdn.lordicon.com/peeuicbd.json" trigger="loop-on-hover" stroke="bold" colors="primary:#c7c116,secondary:#c76f16" style={{ width: '30px', height: '30px', marginRight: '8px' }}></lord-icon>
                     Déconnexion
                   </button>
