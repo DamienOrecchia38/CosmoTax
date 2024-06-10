@@ -3,7 +3,9 @@
 namespace App\Controller;
 
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Annotation\Route;
 use Doctrine\ORM\EntityManagerInterface;
 use App\Entity\Tax;
@@ -22,33 +24,38 @@ class TaxController extends AbstractController
         return $this->json($taxes, 200, [], ['groups' => 'tax:read']);
     }
 
-    
-    // Vérification du numéro d'identification de règlement
+    #[Route('/api/taxes/{id}/update-unique-code', name: 'update_tax_unique_code', methods: ['PATCH'])]
+    public function updateUniqueCode(int $id, Request $request, EntityManagerInterface $entityManager): JsonResponse
+    {
+        $tax = $entityManager->getRepository(Tax::class)->find($id);
 
-    // #[Route('/api/check-unique-code', name: 'check_unique_code', methods: ['POST'])]
-    // public function checkUniqueCode(Request $request): Response
-    // {
-    //     $requestContent = json_decode($request->getContent(), true);
-    //     $uniqueCode = $requestContent['uniqueCode'];
-    //     $payment = $this->entityManager->getRepository(Payment::class)->findOneBy(['uniqueCode' => $uniqueCode]);
+        if (!$tax) {
+            throw $this->createNotFoundException(
+                'No tax found for id '.$id
+            );
+        }
 
-    //     if ($payment) {
-    //         return new Response('Code unique valide', Response::HTTP_OK);
-    //     } else {
-    //         return new Response('Code unique invalide', Response::HTTP_UNAUTHORIZED);
-    //     }
-    // }
+        $requestContent = json_decode($request->getContent(), true);
+        if (isset($requestContent['uniqueCode'])) {
+            $tax->setUniqueCode($requestContent['uniqueCode']);
+            $entityManager->persist($tax);
+            $entityManager->flush();
+        }
 
+        return $this->json(['message' => 'Unique code updated successfully']);
+    }
 
-    // #[Route('/api/payments', name: 'app_payment', methods: ['POST'])]
-    // public function index(Request $request): Response
-    // {
-    //     $data = json_decode($request->getContent(), true);
+    #[Route('/api/check-unique-code', name: 'check_unique_code', methods: ['POST'])]
+    public function checkUniqueCode(Request $request, EntityManagerInterface $entityManager): Response
+    {
+        $requestContent = json_decode($request->getContent(), true);
+        $uniqueCode = $requestContent['uniqueCode'];
+        $tax = $entityManager->getRepository(Tax::class)->findOneBy(['unique_code' => $uniqueCode]);
 
-    //     // Vérification des informations bancaires via l'algorithme de Luhn
-    //     // Enregistrement du paiement
-    //     // Envoi d'un email de confirmation
-
-    //     return $this->json(['message' => 'Paiement effectué avec succès']);
-    // }
+        if ($tax) {
+            return $this->json($tax, 200, [], ['groups' => 'tax:read']);
+        } else {
+            return new Response('Code unique invalide', Response::HTTP_UNAUTHORIZED);
+        }
+    }
 }
