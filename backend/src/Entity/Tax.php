@@ -3,6 +3,9 @@
 namespace App\Entity;
 
 use ApiPlatform\Metadata\ApiResource;
+use ApiPlatform\Metadata\Patch;
+use ApiPlatform\Metadata\Put;
+use ApiPlatform\Metadata\Post;
 use ApiPlatform\Metadata\Get;
 use ApiPlatform\Metadata\GetCollection;
 use App\Repository\TaxRepository;
@@ -15,6 +18,9 @@ use Symfony\Component\Serializer\Annotation\Groups;
     operations: [
         new Get(),
         new GetCollection(),
+        new Post(),
+        new Put(),
+        new Patch(),
     ],
     normalizationContext: ['groups' => ['tax:read']],
 )]
@@ -44,6 +50,9 @@ class Tax
     #[ORM\Column]
     #[Groups(['tax:read'])]
     private ?bool $paid = null;
+
+    #[ORM\Column(length: 255, nullable: true)]
+    private ?string $unique_code = null;
 
     public function getId(): ?int
     {
@@ -106,6 +115,18 @@ class Tax
     public function setPaid(bool $paid): static
     {
         $this->paid = $paid;
+
+        return $this;
+    }
+
+    public function getUniqueCode(): ?string
+    {
+        return $this->unique_code;
+    }
+
+    public function setUniqueCode(?string $unique_code): static
+    {
+        $this->unique_code = $unique_code;
 
         return $this;
     }
