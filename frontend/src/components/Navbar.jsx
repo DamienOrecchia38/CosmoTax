@@ -54,7 +54,7 @@ export default function Navbar({ onLoginClick, onSignUpClick, onHomeClick }) {
   };
 
   return (
-      <nav className="flex items-center justify-between p-4 bg-white bg-opacity-40">
+      <nav className="sticky top-0 z-50 flex items-center justify-between p-4 bg-white bg-opacity-40">
 
         <Link href="/" className="flex items-center ml-4" onClick={onHomeClick}>
           <img src="/alien_navbar.png" alt="Alien logo" className="w-10 h-10 mr-2 sm:w-18 sm:h-18" />
