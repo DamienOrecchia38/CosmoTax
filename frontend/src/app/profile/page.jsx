@@ -109,7 +109,8 @@ export default function ProfilePage() {
     colors: ["yellow", "orange", "lightgreen", "darkgreen", "white"]
   };
 
-  const generateUniqueCode = (taxId) => {
+  const generateUniqueCode = async (taxId) => {
+    
     const alphabet = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ';
     const firstLetter = alphabet[Math.floor(Math.random() * 25)];
     const secondLetter = alphabet[Math.floor(Math.random() * (alphabet.indexOf(firstLetter)))];
@@ -117,6 +118,7 @@ export default function ProfilePage() {
     let num1 = Math.floor(Math.random() * 99) + 1;
     let num2 = 100 - num1;
     const code = `${firstLetter}${secondLetter}${currentYear}_${num1}_${num2}`;
+    
     document.getElementById('clickSound').play();
     setActiveButton(taxId);
     setStarsVisible(true);
@@ -127,7 +129,23 @@ export default function ProfilePage() {
     setIsCopied(false);
     setTimeout(() => {
       setShowModal(true);
-    }, 800); 
+    }, 800);
+    
+    try {
+      const response = await fetch(`http://localhost:8000/api/taxes/${taxId}`, {
+        method: 'PATCH',
+        headers: {
+          'Content-Type': 'application/merge-patch+json',
+          'Authorization': `Bearer ${localStorage.getItem('token')}`,
+        },
+        body: JSON.stringify({ uniqueCode: code }),
+      });
+      if (!response.ok) {
+        throw new Error('Erreur lors de la mise à jour du code unique');
+      }
+    } catch (error) {
+      console.error('Erreur:', error);
+    }
   };
 
   return (
@@ -322,7 +340,7 @@ export default function ProfilePage() {
               <img src={`/images/taxes/${tax.title.replace(/\s+/g, '_').toLowerCase()}.jpg`} alt={tax.title} className="w-full h-[30rem] object-cover mb-4 rounded-t-xl filter grayscale blur-sm" />
               <div className="absolute inset-0 flex items-center justify-center">
                 <div className="flex flex-col items-center">
-                  <FaCheck className="text-green-500 text-6xl mb-2" />
+                  <FaCheck className="mb-2 text-6xl text-green-500" />
                   <p className="text-5xl font-bold text-green-500">Payé</p>
                 </div>
               </div>
