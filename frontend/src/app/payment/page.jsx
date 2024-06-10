@@ -16,6 +16,8 @@ export default function PaymentPage() {
   const [showCountdown, setShowCountdown] = useState(true);
   const [alienAttack, setAlienAttack] = useState(false);
   const [alienHeads, setAlienHeads] = useState([]);
+  const [showAlert, setShowAlert] = useState(false);
+  const [tax, setTax] = useState(null);
 
   useEffect(() => {
     if (showCountdown) {
@@ -23,6 +25,12 @@ export default function PaymentPage() {
         setShowCountdown(false);
         setAlienAttack(true);
         addAlienHead();
+        setTimeout(() => {
+          setShowAlert(true);
+          setTimeout(() => {
+            setShowAlert(false);
+          }, 10000);
+        }, 10000);
       }, 15000);
 
       return () => clearTimeout(timer);
@@ -64,9 +72,14 @@ export default function PaymentPage() {
         });
 
         if (response.ok) {
+          const taxData = await response.json();
+          setTax(taxData);
+          setAlienAttack(false);
+          setShowAlert(false);
+          setShowCountdown(false);
           setShowPaymentForm(true);
         } else {
-          alert('Code unique invalide');
+          alert('Code d\'identification invalide');
         }
       } catch (error) {
         console.error('Erreur:', error);
@@ -76,13 +89,11 @@ export default function PaymentPage() {
 
   const formik = useFormik({
     initialValues: {
-      paymentId: '',
       cardNumber: '',
       cryptogram: '',
       expirationDate: '',
     },
     validationSchema: Yup.object({
-      paymentId: Yup.string().required('Le numéro de règlement est requis'),
       cardNumber: Yup.string().required('Le numéro de carte est requis'),
       cryptogram: Yup.string().required('Le cryptogramme est requis'),
       expirationDate: Yup.string().required('La date d\'expiration est requise'),
@@ -119,9 +130,9 @@ export default function PaymentPage() {
       {showCountdown && <CountdownPopup />}
       
       {alienAttack && (
-        <div className="fixed inset-0 flex items-center justify-center z-50">
+        <div className="fixed inset-0 z-50 flex items-center justify-center">
           <div className="relative">
-            <img src="/alien_attack.png" alt="Alien Attack" className="w-screen h-40 object-cover absolute bottom-0 alien-move"/>
+            <img src="/alien_attack.png" alt="Alien Attack" className="absolute bottom-0 object-cover w-screen h-40 alien-move"/>
             <audio autoPlay><source src="/sounds/alien_scream.mp3" type="audio/mpeg" /></audio>
           </div>
         </div>
@@ -133,6 +144,12 @@ export default function PaymentPage() {
           <audio autoPlay><source src="/sounds/pop.mp3" type="audio/mpeg" /></audio>
         </div>
       ))}
+
+      {showAlert && !showPaymentForm && (
+              <div className="fixed inset-0 z-50 flex items-center justify-center text-5xl font-bold text-white bg-red-500 animate-pulse">
+                Attaque extraterrestre en cours, rafraichissez la fenêtre pour vous évader !
+              </div>
+      )}
 
       {!showPaymentForm ? (
         <form onSubmit={uniqueCodeFormik.handleSubmit} className="max-w-4xl px-16 pt-12 mx-auto mb-6 text-center bg-white shadow-lg bg-opacity-20 backdrop-blur-sm rounded-3xl pb-14">
@@ -159,26 +176,18 @@ export default function PaymentPage() {
           </button>
         </form>
       ) : (  
-        <form onSubmit={formik.handleSubmit}>
-          <div className="relative mb-4 text-left">
-            <label className="block mb-2 font-bold text-gray-700">Numéro de règlement :</label>
-            <input
-              type="text"
-              name="paymentId"
-              value={formik.values.paymentId}
-              onChange={formik.handleChange}
-              onBlur={formik.handleBlur}
-              className={`w-full px-4 py-2 rounded-lg ${
-                formik.touched.paymentId && formik.errors.paymentId ? 'border-red-500' : 'border-gray-300'
-              }`}
-            />
-            {formik.touched.paymentId && formik.errors.paymentId && (
-              <p className="text-xs italic text-red-500">{formik.errors.paymentId}</p>
-            )}
+        <>
+        {tax && (
+          <div className="p-4 mb-4 bg-gray-100 rounded-lg shadow-md">
+            <h3 className="mb-2 text-2xl font-bold">{tax.title}</h3>
+            <p>{tax.description}</p>
+            <p className="text-xl font-bold">{tax.amount} €</p>
           </div>
+        )}
+        <form onSubmit={formik.handleSubmit} className="max-w-4xl px-4 pt-8 pb-10 mx-auto mb-6 text-center bg-white shadow-lg bg-opacity-20 backdrop-blur-sm rounded-2xl sm:px-8 md:px-16">
 
           <div className="relative mb-4 text-left">
-            <label className="block mb-2 font-bold text-gray-700">Numéro de carte :</label>
+            <label className="block mb-2 font-bold text-gray-700">Numéro de carte bancaire :</label>
             <input
               type="text"
               name="cardNumber"
@@ -231,6 +240,7 @@ export default function PaymentPage() {
         <button type="submit" className="px-10 py-5 text-xl font-bold text-white bg-gradient-to-r from-yellow-300 to-yellow-500 hover:from-yellow-500 hover:to-yellow-700 rounded-3xl focus:outline-none focus:shadow-outline" onClick={() => setConfettiActive(true)}>Payer</button>
         <Confetti active={confettiActive} width={window.innerWidth} height={window.innerHeight} numberOfPieces={800} recycle={false} tweenDuration={10000} gravity={0.05}/>
         </form>
+        </>
       )}
     </div>
   );
