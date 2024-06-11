@@ -61,7 +61,7 @@ export default function LoginForm() {
     <form onSubmit={formik.handleSubmit} className="max-w-4xl px-16 pt-12 mx-auto mb-6 text-center bg-white shadow-lg bg-opacity-20 backdrop-blur-sm rounded-3xl pb-14">
       {showProgressBar ? (
         <div className="flex flex-col items-center justify-center">
-          <div className="w-full mb-4 bg-white rounded-full">
+          <div className="w-full mt-4 mb-4 bg-white rounded-full">
             <div className="w-full rounded-full progress-bar"></div>
           </div>
           <script src="https://cdn.lordicon.com/lordicon.js"></script>

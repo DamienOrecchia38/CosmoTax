@@ -7,7 +7,7 @@ import Navbar from '../../components/Navbar';
 import AnimatedTitle from '../../components/AnimatedTitle';
 import CountdownPopup from '../../components/CountdownPopup';
 import Confetti from 'react-dom-confetti';
-import { FaKey } from 'react-icons/fa';
+import { FaKey, FaSpinner, FaCheck } from 'react-icons/fa';
 
 export default function PaymentPage() {
 
@@ -18,6 +18,9 @@ export default function PaymentPage() {
   const [alienHeads, setAlienHeads] = useState([]);
   const [showAlert, setShowAlert] = useState(false);
   const [tax, setTax] = useState(null);
+  const [showPaymentProcessing, setShowPaymentProcessing] = useState(false);
+  const [currentStep, setCurrentStep] = useState(0);
+  const [paymentSuccess, setPaymentSuccess] = useState(false);
 
   useEffect(() => {
     if (showCountdown) {
@@ -53,6 +56,25 @@ export default function PaymentPage() {
     setAlienHeads((prevHeads) => [...prevHeads, newHead]);
   };
 
+  const paymentSteps = [
+    "Vérification de l'existence de votre compte bancaire au sein de la galaxie...",
+    "Négociation avec les extraterrestres pour obtenir un accord...",
+    "Validation du paiement auprès de la Banque Intergalactique...",
+    "Envoi d'une confirmation de paiement par télépathie..."
+  ];
+
+  const processPayment = async () => {
+    setShowPaymentProcessing(true);
+    
+    for (let i = 0; i < paymentSteps.length; i++) {
+      setCurrentStep(i);
+      await new Promise(resolve => setTimeout(resolve, 2000));
+    }
+
+    const paymentSucceeded = true;
+    setPaymentSuccess(paymentSucceeded);
+  }
+
   const uniqueCodeFormik = useFormik({
     initialValues: {
       uniqueCode: '',
@@ -60,6 +82,7 @@ export default function PaymentPage() {
     validationSchema: Yup.object({
       uniqueCode: Yup.string().required('Le code unique est requis'),
     }),
+    
     onSubmit: async (values) => {
       try {
         const response = await fetch('http://localhost:8000/api/check-unique-code', {
@@ -98,25 +121,32 @@ export default function PaymentPage() {
       cryptogram: Yup.string().required('Le cryptogramme est requis'),
       expirationDate: Yup.string().required('La date d\'expiration est requise'),
     }),
+
     onSubmit: async (values) => {
       try {
         const response = await fetch('http://localhost:8000/api/payments', {
           method: 'POST',
           headers: {
-            'Content-Type': 'application/json',
+            'Content-Type': 'application/ld+json',
             'Authorization': `Bearer ${localStorage.getItem('token')}`,
           },
           body: JSON.stringify(values),
         });
-
+  
         if (response.ok) {
-          alert('Paiement effectué avec succès');
+          await processPayment();
           setConfettiActive(true);
         } else {
-          alert('Erreur lors du paiement');
+          const data = await response.json();
+          if (data.error) {
+            alert(data.error);
+          } else {
+            alert('Erreur lors du paiement');
+          }
         }
       } catch (error) {
         console.error('Erreur:', error);
+        alert('Une erreur est survenue lors du paiement');
       }
     },
   });
@@ -177,20 +207,21 @@ export default function PaymentPage() {
         </form>
       ) : (  
         <>
-        {tax && (
-          <div className="p-4 mb-4 bg-gray-100 rounded-lg shadow-md">
-            <h3 className="mb-2 text-2xl font-bold">{tax.title}</h3>
-            <p>{tax.description}</p>
-            <p className="text-xl font-bold">{tax.amount} €</p>
-          </div>
-        )}
         <form onSubmit={formik.handleSubmit} className="max-w-4xl px-4 pt-8 pb-10 mx-auto mb-6 text-center bg-white shadow-lg bg-opacity-20 backdrop-blur-sm rounded-2xl sm:px-8 md:px-16">
+
+          {tax && (
+              <div className="flex flex-col items-center justify-center mb-8">
+                <h2 className="mb-4 text-5xl font-bold text-center text-transparent bg-clip-text bg-gradient-to-r from-green-400 to-yellow-500">{tax.title}</h2>
+                <p className="text-5xl font-bold text-yellow-500">{tax.amount} €</p>
+              </div>
+          )}
 
           <div className="relative mb-4 text-left">
             <label className="block mb-2 font-bold text-gray-700">Numéro de carte bancaire :</label>
             <input
               type="text"
               name="cardNumber"
+              placeholder="&#x1F4B3; Numéro de carte"
               value={formik.values.cardNumber}
               onChange={formik.handleChange}
               onBlur={formik.handleBlur}
@@ -208,6 +239,7 @@ export default function PaymentPage() {
             <input
               type="text"
               name="cryptogram"
+              placeholder="&#x1F512; Cryptogramme"
               value={formik.values.cryptogram}
               onChange={formik.handleChange}
               onBlur={formik.handleBlur}
@@ -225,6 +257,7 @@ export default function PaymentPage() {
             <input
               type="text"
               name="expirationDate"
+              placeholder="&#x1F4C5; MM/AA"
               value={formik.values.expirationDate}
               onChange={formik.handleChange}
               onBlur={formik.handleBlur}
@@ -237,11 +270,40 @@ export default function PaymentPage() {
             )}
           </div>
           
-        <button type="submit" className="px-10 py-5 text-xl font-bold text-white bg-gradient-to-r from-yellow-300 to-yellow-500 hover:from-yellow-500 hover:to-yellow-700 rounded-3xl focus:outline-none focus:shadow-outline" onClick={() => setConfettiActive(true)}>Payer</button>
-        <Confetti active={confettiActive} width={window.innerWidth} height={window.innerHeight} numberOfPieces={800} recycle={false} tweenDuration={10000} gravity={0.05}/>
+        <button type="submit" className="px-10 py-5 text-xl font-bold text-white bg-gradient-to-r from-yellow-300 to-yellow-500 hover:from-yellow-500 hover:to-yellow-700 rounded-3xl focus:outline-none focus:shadow-outline">Payer</button>
+        <Confetti active={confettiActive} width={window.innerWidth} height={window.innerHeight} numberOfPieces={1000} recycle={false} tweenDuration={10000} gravity={0.05}/>
         </form>
         </>
       )}
+
+      {showPaymentProcessing ? (
+            <div className="fixed inset-0 z-50 flex items-center justify-center bg-white shadow-lg bg-opacity-20 backdrop-blur-sm rounded-3xl">
+              <div className="p-8 text-center bg-white rounded-lg shadow-lg">
+                <h2 className="mb-4 text-2xl font-bold">Traitement du paiement en cours...</h2>
+                <div className="space-y-4">
+                  {paymentSteps.map((step, index) => (
+                    <div key={index} className="flex items-center">
+                      {index === currentStep ? (
+                        <FaSpinner className="w-5 h-5 mr-2 text-blue-500 animate-spin" />
+                      ) : index < currentStep ? (
+                        <FaCheck className="w-5 h-5 mr-2 text-green-500" />
+                      ) : (
+                        <div className="w-5 h-5 mr-2"></div>
+                      )}
+                      <span>{step}</span>
+                    </div>
+                  ))}
+                </div>
+              </div>
+            </div>
+          ) : paymentSuccess ? (
+            <div className="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-50">
+              <div className="p-8 text-center bg-white rounded-lg shadow-lg">
+                <FaCheck className="w-20 h-20 mx-auto mb-4 text-green-500" />
+                <h2 className="text-4xl font-bold">Paiement effectué !</h2>
+              </div>
+            </div>
+          ) : null}
     </div>
   );
 }
