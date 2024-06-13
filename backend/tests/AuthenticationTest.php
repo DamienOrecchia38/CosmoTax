@@ -10,10 +10,10 @@ class AuthenticationTest extends ApiTestCase
     public function testSuccessfulLogin(): void
     {
         $client = static::createClient();
-        $client->request('POST', '/login_endpoint', [
+        $client->request('POST', 'http://localhost:8000/api/login_check', [
             'json' => [
-                'username' => 'valid_username',
-                'password' => 'valid_password',
+                'username' => 'damien@gmail.com',
+                'password' => '123456',
             ],
         ]);
 
@@ -27,7 +27,7 @@ class AuthenticationTest extends ApiTestCase
     public function testFailedLogin(): void
     {
         $client = static::createClient();
-        $client->request('POST', '/login_endpoint', [
+        $client->request('POST', 'http://localhost:8000/api/login_check', [
             'json' => [
                 'username' => 'invalid_username',
                 'password' => 'invalid_password',
@@ -37,21 +37,23 @@ class AuthenticationTest extends ApiTestCase
         $this->assertResponseStatusCodeSame(Response::HTTP_UNAUTHORIZED);
     }
 
-    public function testAccessToProtectedResource(): void
+    public function testSuccessfulSignUp(): void
     {
         $client = static::createClient();
-        $client->request('GET', '/protected_resource_endpoint', [], [], [
-            'HTTP_Authorization' => 'Bearer valid_token',
+        $client->request('POST', 'http://localhost:8000/api/users', [
+            'json' => [
+                'email' => 'damien@gmail.fr',
+                'password' => '123456',
+                'firstname' => 'Damso',
+                'lastname' => 'dododo',
+                'address' => '20 rue du code',
+                'phone' => '1234567890',
+                'card_number' => '4111111111111111',
+                'cryptogram' => '123',
+                'expiration_date' => '12/25',
+            ],
         ]);
 
-        $this->assertResponseStatusCodeSame(Response::HTTP_OK);
-    }
-
-    public function testDeniedAccessToProtectedResource(): void
-    {
-        $client = static::createClient();
-        $client->request('GET', '/protected_resource_endpoint');
-
-        $this->assertResponseStatusCodeSame(Response::HTTP_UNAUTHORIZED);
+        $this->assertResponseStatusCodeSame(Response::HTTP_CREATED);
     }
 }
