@@ -85,7 +85,7 @@ Here is a list of form constraints :
 
 Below is the schema of the CosmoTax database:
 
-![Database Schema](images/db_scheme_cosmotax.png)
+![Database Schema](frontend/public/images/db_scheme_cosmotax.png)
 
 
 ## Technologies Used
