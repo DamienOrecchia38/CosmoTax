@@ -54,7 +54,7 @@ class AppFixtures extends Fixture
             $tax->setTitle($taxData['title']);
             $tax->setDescription($taxData['description']);
             $tax->setAmount($faker->numberBetween(10, 1000));
-            $tax->setPaid(false);
+            $tax->setPaid((bool) random_int(0, 1));
             $manager->persist($tax);
         }
 
@@ -79,7 +79,7 @@ class AppFixtures extends Fixture
                 $tax->setTitle($taxData['title']);
                 $tax->setDescription($taxData['description']);
                 $tax->setAmount($faker->numberBetween(10, 1000));
-                $tax->setPaid(false);
+                $tax->setPaid((bool) random_int(0, 1));
                 $manager->persist($tax);
             }
         }
