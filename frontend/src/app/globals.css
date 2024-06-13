@@ -68,21 +68,25 @@ body {
 
 .progress-bar {
   width: 100%;
-  height: 40px;
+  height: 100%;
   background: linear-gradient(to right,#8bc34a, #ffee05);
   animation: progress 10s linear;
   transform-origin: left;
 }
 
-@keyframes alien-move {
-  0% {
-    transform: translateX(-100%);
-  }
-  100% {
-    transform: translateX(100%);
-  }
+.alien-attack-container {
+  animation: alien-attack 10s linear forwards;
+  width: 50%;
+  height: 100%;
+  position: relative;
+  bottom: 0;
 }
 
-.alien-move {
-  animation: alien-move 10s linear infinite;
+@keyframes alien-attack {
+  0% {
+    left: -100%;
+  }
+  100% {
+    left: 100%;
+  }
 }

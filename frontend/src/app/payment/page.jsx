@@ -15,6 +15,7 @@ export default function PaymentPage() {
   const [confettiActive, setConfettiActive] = useState(false);
   const [showCountdown, setShowCountdown] = useState(true);
   const [alienAttack, setAlienAttack] = useState(false);
+  const [showAlienAttack, setShowAlienAttack] = useState(false);
   const [alienHeads, setAlienHeads] = useState([]);
   const [showAlert, setShowAlert] = useState(false);
   const [tax, setTax] = useState(null);
@@ -26,6 +27,7 @@ export default function PaymentPage() {
     if (showCountdown) {
       const timer = setTimeout(() => {
         setShowCountdown(false);
+        setShowAlienAttack(true);
         setAlienAttack(true);
         addAlienHead();
         setTimeout(() => {
@@ -160,10 +162,10 @@ export default function PaymentPage() {
 
       {showCountdown && <CountdownPopup />}
       
-      {alienAttack && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center">
-          <div className="relative">
-            <img src="/alien_attack.png" alt="Alien Attack" className="absolute bottom-0 object-cover w-screen h-40 alien-move"/>
+      {showAlienAttack && (
+        <div className="fixed inset-0 z-50 flex items-end justify-center">
+          <div className="relative alien-attack-container">
+            <img src="/alien_attack.png" alt="Alien Attack" className="w-full h-full object-cover" />
             <audio autoPlay><source src="/sounds/alien_scream.mp3" type="audio/mpeg" /></audio>
           </div>
         </div>
@@ -280,7 +282,7 @@ export default function PaymentPage() {
       {showPaymentProcessing ? (
             <div className="fixed inset-0 z-50 flex items-center justify-center bg-white shadow-lg bg-opacity-20 backdrop-blur-sm rounded-3xl">
               <div className="p-8 text-center bg-white rounded-lg shadow-lg">
-                <h2 className="mb-4 text-2xl font-bold">Traitement du paiement en cours...</h2>
+                <h2 className="mb-6 text-2xl font-bold">Traitement du paiement en cours...</h2>
                 <div className="space-y-4">
                   {paymentSteps.map((step, index) => (
                     <div key={index} className="flex items-center">
