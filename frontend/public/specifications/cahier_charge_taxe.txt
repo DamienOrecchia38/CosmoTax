@@ -1,0 +1,227 @@
+       🏗️
+       Taxe
+           Type                       Brief
+
+           Technologie                Next      React       Symfony
+
+           Version                    v0
+
+
+
+       Introduction
+
+       Réalisez un site de paiement d’une taxe, contravention ou impôt. Libre à vous de décider la nature du service
+       (service des impôts stellaires, service des contraventions du Mordor, police de Johto…).
+       Dans les faits, suite à la réception d’un courrier provenant de vos services, l’utilisateur se rend sur votre site pour
+       régler une somme qui lui est réclamée, quelle qu'en soit la raison.
+
+
+
+       Pour la réalisation de ce projet, vous travaillez en étroite collaboration avec l’entreprise E-corp, qui insiste sur la
+       nécessité de respecter les meilleures pratiques de développement. Vous devrez réaliser une application simple
+       mais répondant à des critères de qualité, comme la sécurité de vos utilisateurs et la robustesse de votre système.
+
+
+
+        Fonctionnalité                        Information
+
+        Système d’authentification            Un système d’authentification pour les utilisateurs.
+
+                                              Formulaire de soumission d’un règlement accompagné d’un
+        Soumission et paiement
+                                              paiement.
+
+        Consultation des règlements           Page de liste des règlements effectués
+
+        Administration du profil              Page de profil pour administrer ses données
+
+        Tests                                 Plan de test de l’authentification + logique métier.
+
+        Fixtures                              Fausses données à initialiser au démarrage du projet.
+
+        Mailing                               Envoie de mail de confirmation de règlement.
+
+
+
+       1. L’utilisateur est invité à se connecter ou créer un compte dès son arrivée sur le site.
+
+       2. Lorsque l’utilisateur est authentifié, il peut accéder à sa page de profil où il retrouve l’ensemble de ses
+          informations personnelles, avec la possibilité de les éditer.
+
+       3. L’utilisateur peut accéder à une page de formulaire destinée à recueillir les informations nécessaires au
+          règlement qui lui est réclamé.
+
+       4. Lorsque l’utilisateur a soumis sa demande de règlement, un email de confirmation lui est envoyé.
+
+       5. L’utilisateur peut consulter l’ensemble de ses règlements sur une page de liste.
+
+
+
+
+       Architecture
+
+
+
+Taxe                                                                                                                             1
+       Le projet est composé d’un backend en Symfony et d’un frontend en Next. L’application Symfony met à
+       disposition une API REST, consommée par l’application frontend.
+
+
+
+       Il est conseillé d’utiliser la librairie API Platform pour mettre en place votre API REST. Cela vous est d’autant plus
+       recommandé que vous devrez gérer l’authentification de vos utilisateurs à l’aide de JWToken, qui s’intègre très
+       bien avec API Platform.
+
+
+
+
+       Authentification
+       Un système d’authentification permet aux utilisateurs de s’inscrire et de se connecter. Toute l’authentification se
+       fait via l’utilisation de tokens JWT. Ces derniers permettront de respecter les principes REST de l’API.
+
+
+
+       Les tokens devront avoir une durée de validité d’une heure maximum.
+
+
+
+
+       Sécurité
+       Les données récupérées via les formulaires sont contrôlées côté frontend et côté backend. Les messages
+       d’erreurs adéquats sont affichés si nécessaire.
+
+
+
+       Les routes API doivent être administrées de sorte qu’aucune route sensible ou non indispensable ne puisse être
+       exploitée par l’utilisateur.
+
+
+
+       Toutes les contraintes mises en place dans les formulaires devront être listées dans un tableau qui sera transmis
+       à E-corp à l’issue du développement.
+
+
+
+
+       Robustesse
+       Le code métier de l’application ainsi que le système d’authentification exploiteront des fonctions pures*
+       regroupées sous forme de services. Ces fonctions seront couvertes par un plan de tests afin d’assurer la
+       robustesse du code.
+
+
+
+       Tous les tests mis en place dans l’application devront être listés dans un tableau qui sera transmis à E-corp à
+       l’issue du développement.
+
+
+       Le code métier est uniquement exécuté dans la partie backend de l’application. La partie frontend est une simple
+       interface permettant l’interaction entre l’utilisateur et le backend.
+
+
+       Fonction pure : La fonction reçoit des arguments en entrée et retourne le résultat du traitement effectué. Elle
+       fournira toujours le même retour pour les mêmes arguments d’entrée.
+
+
+       Formulaire de règlement
+       Le formulaire peut être ajusté à vos besoins mais contiendra à minima les champs du tableau ci-dessous.
+
+
+
+        Champ                              Information
+
+        N° d’identification de règlement   Le numéro unique du règlement, voir chapitre plus bas.
+
+        Nom                                Nom de l’utilisateur.
+
+
+
+
+Taxe                                                                                                                            2
+        Champ                            Information
+
+        Prénom                           Prénom(s) de l’utilisateurs, prévoir plusieurs champs.
+
+        Adresse                          Adresse de l’utilisateur.
+
+        N° de téléphone                  Numéro de l’utilisateur.
+
+        Email                            Adresse email de l’utilisateur.
+
+        N° de carte bancaire             16 chiffres de la carte bancaire.
+
+        Cryptogramme                     Cryptogramme de la carte bancaire.
+
+        Date d’expiration                Date d’expiration de la carte bancaire.
+
+
+
+
+       Numéro d’identification de règlement
+       C’est un numéro unique qui est indiqué sur le papier reçu par l’utilisateur. C’est à l’aide de ce numéro qu’il indique
+       à vos services le règlement qu’il souhaite effectuer. Grâce à ce numéro, il retrouve le montant à payer ainsi que la
+       demande associée dans le formulaire de règlement.
+
+
+
+       Exemple de parcours utilisateur :
+
+       1. Je m’authentifie sur la plateforme.
+
+       2. Je saisis le numéro de règlement dans la page adéquate.
+
+       3. Je suis redirigé vers le formulaire de règlement concerné, où je retrouve l’ensemble des informations du
+          règlement demandé ainsi que le formulaire à remplir pour régler ce qui est dû.
+
+
+
+       Les numéros sont composés d’une suite de chiffres et de lettres respectant cette structure :
+
+           2 lettres, la première est nécessairement devant la seconde dans l’alphabet
+
+           l’année en cours
+
+           2 chiffres séparés par un underscore et qui, une fois additionnés, sont nécessairement égaux à 100.
+
+
+
+       Exemples :
+
+           KW2024_22_78 // OK
+
+           AB2024_17_83 // OK
+
+           YZ2024_1_99 // OK
+
+           ZA2024_22_78 // KO
+
+           AB2023_17_83 // KO
+
+           YZ2024_2_99 // KO
+
+
+
+
+       Vérification du moyen de paiement
+       Vos services ne sont pas habilités à prélever le contribuable, vous êtes mandatés pour récupérer les demandes
+       de règlements pour le compte de E-corp. De ce fait, les utilisateurs ne paient pas à proprement parler, ils vous
+       fournissent leurs informations bancaires pour que votre client puisse effectuer les prélèvements.
+
+
+
+       Néanmoins, il est de votre responsabilité d’assurer la conformité des informations bancaires soumises par
+       l’utilisateur. Au même titre que le numéro d’identification de règlement, il sera nécessaire d’effectuer une
+       vérification du moyen de paiement grâce à l’algorithme de Luhn.
+
+
+
+
+Taxe                                                                                                                            3
+       Cet algorithme, dont vous trouverez toutes les informations nécessaires sur Internet, permet de vérifier que le
+       code de la carte bancaire respecte un modèle précis afin de limiter la fraude. Vous devrez également vérifier la
+       date d’expiration du moyen de paiement.
+
+
+
+
+Taxe                                                                                                                      4
+

@@ -7,7 +7,9 @@ CosmoTax is an innovative intergalactic tax payment platform that aims to revolu
 
 - [Description](#description)
 - [Features](#features)
-- [Demo](#demo)
+- [Tests](#tests)
+- [Form Constraints](#Form-constraints)
+- [Database Schema](#database-schema)
 - [Technologies](#technologies)
 - [Installation](#installation)
 - [Configuration](#configuration)
@@ -29,29 +31,71 @@ CosmoTax also prioritizes payment management, allowing users to view and track t
 
 CosmoTax offers a variety of features designed to enhance the user experience on the platform. Here are some of the main features available:
 
-- **Tax Catalog**: Users can browse and search for taxes in the catalog. The catalog provides detailed information, including images and descriptions.
-- **Tax Filtering**: Users can filter taxes by categories to easily find the ones they need to pay. The platform offers a range of categories to choose from, allowing users to refine their search.
-- **Payment**: Users can select the taxes to pay and proceed with the payment. The payment supports various payment methods.
-- **Payment Management**: Users can view and manage their payments. They can access their payment history and track transactions.
-- **Customer Support**: CosmoTax provides customer support for any questions or issues. Users can contact support via the contact form or through the GitHub repository.
+- **Tax Carousel**: Users can browse and search for taxes in the carousel. The carousel provides detailed information, including images and descriptions.
+- **Customer Testimonials**: Users can view customer testimonials and scroll them every 5 seconds.
+- **Signup and Login**: Users can signup and login to the platform.
+- **User Profile**: Users can view their payment history, manage their profile information and generate a unique code to pay the taxes.
+- **Alien attack**: If the user does not quickly enter their unique code on the payment page, an alien attack occurs.
+- **Payment**: Users can select the taxes (with unique code) to pay and proceed with the payment.
+- **Email Confirmation**: After a successful payment, users receive a confirmation email with the payment details.
+- **Admin Panel**: The admin panel is used to manage the platform and the taxes.
 
 These features are designed to create a seamless and enjoyable tax payment experience for CosmoTax users.
 
 
-## Demo
+## Tests
 
-Here's a short demo video of CosmoTax in action:
+Here is a list of all frontend and backend tests :
 
-![CosmoTax Demo](demo.gif)
+| Test | Description | Frontend/Backend |
+| ---- | ----------- | ---------------- |
+| Display of customer testimonials | Verifies that customer testimonials are displayed correctly and scroll every 5 seconds | Frontend |
+| Login form rendering and validation | Tests the rendering of the login form and field validation | Frontend |
+| Navbar rendering and conditional display | Verifies that the navigation bar is displayed correctly and that the login/signup or profile/payment buttons are visible based on the login state | Frontend |
+| Countdown popup rendering and countdown | Tests the rendering of the countdown popup and verifies that the countdown works correctly | Frontend |
+| Signup form rendering | Verifies that the signup form is rendered correctly | Frontend |
+| Tax carousel rendering | Tests the rendering of the tax carousel | Frontend |
+| Payment form rendering | Tests the rendering of the payment form | Frontend |
+| User signup validation | Validates the field constraints during user signup | Backend |
+| User authentication | Tests the user authentication process via the API | Backend |
+
+
+## Form Constraints
+
+Here is a list of form constraints :
+
+| Form | Field | Constraint |
+| ---- | ----- | ---------- |
+| Signup | Email | Required, valid email format (Yup, Controller) |
+| Signup | Password | Required, minimum 6 characters (Yup, Controller) |
+| Signup | First Name | Required (Yup, Controller) |
+| Signup | Last Name | Required (Yup, Controller) |
+| Signup | Address | Required (Yup, Controller) |
+| Signup | Phone | Required (Yup, Controller) |
+| Signup | Card Number | Required (Yup, Controller) |
+| Signup | Cryptogram | Required, exactly 3 digits (Yup, Controller) |
+| Signup | Expiration Date | Required, valid date format (Yup, Controller) |
+| Payment | Card Number | Required (Formik, Luhn) |
+| Payment | Cryptogram | Required (Formik) |
+| Payment | Expiration Date | Required (Formik) |
+| Payment | Unique Code | Required (Formik) |
+
+
+## Database Schema
+
+Below is the schema of the CosmoTax database:
+
+![Database Schema](images/db_scheme_cosmotax.png)
 
 
 ## Technologies Used
 
-- **Languages**: JavaScript, PHP
+- **Languages**: HTML, CSS, Tailwind, JavaScript, PHP
 - **Frameworks**: Symfony (Backend), Next.js (Frontend)
-- **Libraries**: React, Formik, Yup, React Icons, React Loader Spinner, React Slick, React Spring, Confetti
-- **Database**: Doctrine ORM
+- **Libraries**: React, Formik, Yup, React Icons, React Loader Spinner, React Slick, React Spring, Framer Motion, Confetti, Mailhog, Easyadmin
+- **Database**: PHPmyAdmin, Doctrine ORM
 - **Tools**: Node.js, npm, Composer, Git
+- **Test**: PhpUnit, Jest
 
 
 ## Installation
