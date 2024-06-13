@@ -68,7 +68,7 @@ body {
 
 .progress-bar {
   width: 100%;
-  height: 100%;
+  height: 40px;
   background: linear-gradient(to right,#8bc34a, #ffee05);
   animation: progress 10s linear;
   transform-origin: left;
@@ -76,7 +76,7 @@ body {
 
 .alien-attack-container {
   animation: alien-attack 10s linear forwards;
-  width: 50%;
+  width: 100%;
   height: 100%;
   position: relative;
   bottom: 0;
