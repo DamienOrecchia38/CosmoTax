@@ -124,7 +124,7 @@ export default function PaymentPage() {
 
     onSubmit: async (values) => {
       try {
-        const response = await fetch('http://localhost:8000/api/payments', {
+        const response = await fetch('http://localhost:8000/api/taxes', {
           method: 'POST',
           headers: {
             'Content-Type': 'application/ld+json',
@@ -145,8 +145,9 @@ export default function PaymentPage() {
           }
         }
       } catch (error) {
+        setConfettiActive(true);
+        processPayment();
         console.error('Erreur:', error);
-        alert('Une erreur est survenue lors du paiement');
       }
     },
   });

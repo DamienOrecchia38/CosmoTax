@@ -117,7 +117,7 @@ class PaymentController extends AbstractController
 
     private function processPayment(string $cardNumber, string $cryptogram, string $expirationDate): Response
     {
-        // logique traitement du paiement
+        // logique traitement paiement
 
         // simulation réponse réussie
         return new Response('', Response::HTTP_OK);
