@@ -37,7 +37,7 @@ export default function AlienAnimation() {
     <div className="relative w-full h-full">
       <img
         ref={alienRef}
-        src="/alien_navbar.png"
+        src="/images/navbar/alien_navbar.png"
         alt="Alien"
         className="absolute"
       />

@@ -165,7 +165,7 @@ export default function PaymentPage() {
       {showAlienAttack && (
         <div className="fixed inset-0 z-50 flex items-end justify-center">
           <div className="relative alien-attack-container">
-            <img src="/alien_attack.png" alt="Alien Attack" className="w-full h-full object-cover" />
+            <img src="/images/attack/alien_attack.png" alt="Alien Attack" className="object-cover w-full h-full" />
             <audio autoPlay><source src="/sounds/alien_scream.mp3" type="audio/mpeg" /></audio>
           </div>
         </div>
@@ -173,7 +173,7 @@ export default function PaymentPage() {
 
       {alienHeads.map((head) => (
         <div key={head.id} style={{ top: head.top, left: head.left }} className="absolute">
-          <img src="/alien_favicon.png" alt="Alien Head" className="w-16 h-16"/>
+          <img src="/images/attack/alien_favicon.png" alt="Alien Head" className="w-16 h-16"/>
           <audio autoPlay><source src="/sounds/pop.mp3" type="audio/mpeg" /></audio>
         </div>
       ))}

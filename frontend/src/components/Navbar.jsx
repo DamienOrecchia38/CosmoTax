@@ -57,7 +57,7 @@ export default function Navbar({ onLoginClick, onSignUpClick, onHomeClick }) {
     <nav className="sticky top-0 z-50 flex flex-col items-center justify-between p-4 bg-white md:flex-row bg-opacity-40">
       <div className="flex items-center justify-between w-full md:w-auto">
         <Link href="/" className="flex items-center ml-4" onClick={onHomeClick}>
-          <img src="/alien_navbar.png" alt="Alien logo" className="w-10 h-10 mr-2 sm:w-18 sm:h-18" />
+          <img src="/images/navbar/alien_navbar.png" alt="Alien logo" className="w-10 h-10 mr-2 sm:w-18 sm:h-18" />
           <div className="font-['Bangers'] text-3xl sm:text-5xl font-bold bg-gradient-anim text-transparent bg-clip-text animate-gradientX">CosmoTax</div>
         </Link>
 

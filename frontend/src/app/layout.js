@@ -14,7 +14,7 @@ export default function RootLayout({ children }) {
       <head>
         <title>{metadata.title}</title>
         <meta name="description" content={metadata.description} />
-        <link rel="icon" href="/alien_favicon.png" />
+        <link rel="icon" href="/images/attack/alien_favicon.png" />
         <link href="https://fonts.googleapis.com/css2?family=Bangers&display=swap" rel="stylesheet" />
       </head>
       <body className={inter.className}>{children}</body>
